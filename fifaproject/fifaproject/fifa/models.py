@@ -1,4 +1,4 @@
-# flights/models.py
+# fifas/models.py
 
 from djongo import models
 
@@ -21,11 +21,11 @@ class Airplane(models.Model):
         return self.model
 
 
-class Flight(models.Model):
-    flight_number = models.CharField(max_length=255)
+class fifa(models.Model):
+    fifa_number = models.CharField(max_length=255)
     airline = models.CharField(max_length=255)
     destination = models.CharField(max_length=255)
     departure_date = models.DateField()
 
     def __str__(self):
-        return self.flight_number
+        return self.fifa_number
