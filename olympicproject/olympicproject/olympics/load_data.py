@@ -1,4 +1,4 @@
-# fifas/load_data.py
+# olympics/load_data.py
 
 import pandas as pd
 from olympicproject.olympics.models import Airline, Airplane, fifa
@@ -16,6 +16,6 @@ def load_data():
     #for _, row in airplanes_df.iterrows():
     #    Airplane.objects.create(id=row['id'], model=row['model'], capacity=row['capacity'])
 
-    #for _, row in fifas_df.iterrows():
+    #for _, row in olympics_df.iterrows():
     #    fifa.objects.create(fifa_number=row['fifa_number'], airline=row['airline'],
     #                          destination=row['destination'], departure_date=row['departure_date'])
