@@ -10,7 +10,7 @@ def load_data():
     medals_df = pd.read_csv('olympic_medals.csv')
     results_df = pd.read_csv('olympic_results.csv')
 
-    #for _, row in olympic_athletes_df.iterrows():
+    #for _, row in athletes_df.iterrows():
     #    Airline.objects.create(id=row['id'], name=row['name'], country=row['country'])
 
     #for _, row in airplanes_df.iterrows():
