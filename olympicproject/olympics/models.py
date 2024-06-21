@@ -3,7 +3,7 @@
 #from django import models
 from django.db import models
 
-class OlympicHost(models.Model):
+class Host(models.Model):
     game_slug = models.CharField(max_length=255)
     game_end_date = models.DateTimeField()
     game_start_date = models.DateTimeField()
@@ -15,7 +15,7 @@ class OlympicHost(models.Model):
     def __str__(self):
         return f"{self.game_name} ({self.game_year})"
     
-class OlympicAthlete(models.Model):
+class Athlete(models.Model):
     athlete_url = models.URLField(max_length=500)
     athlete_full_name = models.CharField(max_length=255)
     games_participations = models.IntegerField()
@@ -27,7 +27,7 @@ class OlympicAthlete(models.Model):
     def __str__(self):
         return self.athlete_full_name
 
-class OlympicMedal(models.Model):
+class Medal(models.Model):
     discipline_title = models.CharField(max_length=255)
     slug_game = models.CharField(max_length=255)
     event_title = models.CharField(max_length=255)
@@ -44,7 +44,7 @@ class OlympicMedal(models.Model):
     def __str__(self):
         return f"{self.athlete_full_name} - {self.medal_type} ({self.slug_game})"
 
-class OlympicResult(models.Model):
+class Result(models.Model):
     discipline_title = models.CharField(max_length=255)
     event_title = models.CharField(max_length=255)
     slug_game = models.CharField(max_length=100)
