@@ -8,13 +8,17 @@ class AthleteRepository:
         self.athletes_collection = self.db['athletes']
 
     def get_all_athletes(self):
-        return list(self.athletes_collection.find())
+        try:
+            return list(self.athletes_collection.find())
+        except Exception as e:
+            print(f"Errore nel recuperare tutti gli atleti: {e}")
+            return []
 
     def get_athlete_by_id(self, athlete_id):
         try:
             return self.athletes_collection.find_one({'_id': ObjectId(athlete_id)})
         except Exception as e:
-            print(f"Errore: {e}")
+            print(f"Errore nel recuperare l'atleta con ID {athlete_id}: {e}")
             return None
 
     def create_athlete(self, name, sport, age):
@@ -23,9 +27,13 @@ class AthleteRepository:
             'sport': sport,
             'age': age
         }
-        result = self.athletes_collection.insert_one(athlete)
-        athlete['_id'] = result.inserted_id
-        return athlete
+        try:
+            result = self.athletes_collection.insert_one(athlete)
+            athlete['_id'] = result.inserted_id
+            return athlete
+        except Exception as e:
+            print(f"Errore nel creare l'atleta: {e}")
+            return None
 
     def update_athlete(self, athlete_id, name=None, sport=None, age=None):
         update_fields = {}
@@ -35,14 +43,22 @@ class AthleteRepository:
             update_fields['sport'] = sport
         if age:
             update_fields['age'] = age
-        
-        result = self.athletes_collection.find_one_and_update(
-            {'_id': ObjectId(athlete_id)},
-            {'$set': update_fields},
-            return_document=ReturnDocument.AFTER
-        )
-        return result
+
+        try:
+            result = self.athletes_collection.find_one_and_update(
+                {'_id': ObjectId(athlete_id)},
+                {'$set': update_fields},
+                return_document=ReturnDocument.AFTER
+            )
+            return result
+        except Exception as e:
+            print(f"Errore nel aggiornare l'atleta con ID {athlete_id}: {e}")
+            return None
 
     def delete_athlete(self, athlete_id):
-        result = self.athletes_collection.delete_one({'_id': ObjectId(athlete_id)})
-        return result.deleted_count > 0
+        try:
+            result = self.athletes_collection.delete_one({'_id': ObjectId(athlete_id)})
+            return result.deleted_count > 0
+        except Exception as e:
+            print(f"Errore nel cancellare l'atleta con ID {athlete_id}: {e}")
+            return False
