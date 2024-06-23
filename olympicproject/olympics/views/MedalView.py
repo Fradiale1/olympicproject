@@ -45,13 +45,13 @@ class MedalView(View):
         medal = self.medal_repository.create_medal(data.get('athlete'), data.get('event'), data.get('medal_type'))
         return JsonResponse({"id": str(medal._id), "athlete": str(medal.athlete), "event": medal.event, "medal_type": medal.medal_type})
 
-    @request_mapping("/update/<uuid:medal_id>", method="post")
+    @request_mapping("/update/<str:medal_id>", method="post")
     def update_medal(self, request, medal_id):
         data = request.POST
         medal = self.medal_repository.update_medal(medal_id, data.get('athlete'), data.get('event'), data.get('medal_type'))
         return JsonResponse({"id": str(medal._id), "athlete": str(medal.athlete), "event": medal.event, "medal_type": medal.medal_type})
 
-    @request_mapping("/delete/<uuid:medal_id>", method="get")
+    @request_mapping("/delete/<str:medal_id>", method="get")
     def delete_medal(self, request, medal_id):
         self.medal_repository.delete_medal(medal_id)
         return JsonResponse({"message": "Medal deleted"})

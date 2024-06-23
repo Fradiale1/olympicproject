@@ -53,13 +53,13 @@ class AthleteView(View):
         athlete = self.athlete_repository.create_athlete(data.get('name'), data.get('sport'), data.get('age'))
         return JsonResponse({"id": str(athlete._id), "name": athlete.name, "sport": athlete.sport, "age": athlete.age})
 
-    @request_mapping("/update/<uuid:athlete_id>", method="post")
+    @request_mapping("/update/<str:athlete_id>", method="post")
     def update_athlete(self, request, athlete_id):
         data = request.POST
         athlete = self.athlete_repository.update_athlete(athlete_id, data.get('name'), data.get('sport'), data.get('age'))
         return JsonResponse({"id": str(athlete._id), "name": athlete.name, "sport": athlete.sport, "age": athlete.age})
 
-    @request_mapping("/delete/<uuid:athlete_id>", method="post")
+    @request_mapping("/delete/<str:athlete_id>", method="post")
     def delete_athlete(self, request, athlete_id):
         self.athlete_repository.delete_athlete(athlete_id)
         return JsonResponse({"message": "Atleta Eliminato"})

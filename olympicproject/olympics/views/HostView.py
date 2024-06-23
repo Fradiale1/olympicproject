@@ -47,13 +47,13 @@ class HostView(View):
         host = self.host_repository.create_host(data.get('city'), data.get('country'), data.get('year'))
         return JsonResponse({"id": str(host._id), "city": host.city, "country": host.country, "year": host.year})
 
-    @request_mapping("/update/<uuid:host_id>", method="post")
+    @request_mapping("/update/<str:host_id>", method="post")
     def update_host(self, request, host_id):
         data = request.POST
         host = self.host_repository.update_host(host_id, data.get('city'), data.get('country'), data.get('year'))
         return JsonResponse({"id": str(host._id), "city": host.city, "country": host.country, "year": host.year})
 
-    @request_mapping("/delete/<uuid:host_id>", method="post")
+    @request_mapping("/delete/<str:host_id>", method="post")
     def delete_host(self, request, host_id):
         self.host_repository.delete_host(host_id)
         return JsonResponse({"message": "Host deleted"})

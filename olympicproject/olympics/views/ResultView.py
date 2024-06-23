@@ -57,13 +57,13 @@ class ResultView(View):
         result = self.result_repository.create_result(data.get('athlete'), data.get('event'), data.get('performance'), data.get('rank'))
         return JsonResponse({"id": str(result._id), "athlete": str(result.athlete), "event": result.event, "performance": result.performance, "rank": result.rank})
 
-    @request_mapping("/update/<uuid:result_id>", method="post")
+    @request_mapping("/update/<str:result_id>", method="post")
     def update_result(self, request, result_id):
         data = request.POST
         result = self.result_repository.update_result(result_id, data.get('athlete'), data.get('event'), data.get('performance'), data.get('rank'))
         return JsonResponse({"id": str(result._id), "athlete": str(result.athlete), "event": result.event, "performance": result.performance, "rank": result.rank})
 
-    @request_mapping("/delete/<uuid:result_id>", method="get")
+    @request_mapping("/delete/<str:result_id>", method="get")
     def delete_result(self, request, result_id):
         self.result_repository.delete_result(result_id)
         return JsonResponse({"message": "Result deleted"})
