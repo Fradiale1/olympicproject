@@ -28,10 +28,15 @@ class MedalView(View):
         return JsonResponse(data, safe=False)
 
 
-    @request_mapping("/getById/<uuid:medal_id>", method="get") #@get("/{medal_id}")
+    @request_mapping("/getById/<str:medal_id>", method="get") #@get("/{medal_id}")
     def get_medal_by_id(self, request, medal_id):
         medal = self.medal_repository.get_medal_by_id(medal_id)
-        data = {"id": str(medal._id), "athlete": str(medal.athlete), "event": medal.event, "medal_type": medal.medal_type}
+        data = {
+                'id': str(medal['_id']),  # Converti ObjectId in stringa per JSON
+                'medal_type': medal.get('medal_type',''),  # Utilizza get per evitare KeyError
+                'athlete_full_name': medal.get('athlete_full_name',''),  # Utilizza get per evitare KeyError
+                'country_name': medal.get('country_name','')  # Utilizza get per evitare KeyError
+            }
         return JsonResponse(data)
 
     @request_mapping("/create/", method="post")

@@ -35,7 +35,7 @@ class AthleteView(View):
 
         return JsonResponse(data, safe=False)
 
-    @request_mapping("/getById/<uuid:athlete_id>", method="get") #@get("/{athlete_id}")
+    @request_mapping("/getById/<str:athlete_id>", method="get") #@get("/{athlete_id}")
     def get_athlete_by_id(self, request, athlete_id):
         athlete = self.athlete_repository.get_athlete_by_id(athlete_id)
         #data = {"id": str(athlete._id), "name": athlete.name, "sport": athlete.sport, "age": athlete.age}

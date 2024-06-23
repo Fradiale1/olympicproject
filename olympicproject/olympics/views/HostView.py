@@ -30,10 +30,15 @@ class HostView(View):
 
         return JsonResponse(data, safe=False)
 
-    @request_mapping("/getById/<uuid:host_id>", method="get") #@get("/{host_id}")
+    @request_mapping("/getById/<str:host_id>", method="get") #@get("/{host_id}")
     def get_host_by_id(self, request, host_id):
         host = self.host_repository.get_host_by_id(host_id)
-        data = {"id": str(host._id), "city": host.city, "country": host.country, "year": host.year}
+        data = {
+                'id': str(host['_id']),  # Converti ObjectId in stringa per JSON
+                'nome': host.get('game_name', ''),  # Utilizza get per evitare KeyError
+                'country': host.get('game_location', ''),  # Utilizza get per evitare KeyError
+                'year': host.get('game_year', '')  # Utilizza get per evitare KeyError
+            }
         return JsonResponse(data)
 
     @request_mapping("/create/", method="post")

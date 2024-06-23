@@ -13,7 +13,11 @@ class MedalRepository:
         return list(self.medals_collection.find())
 
     def get_medal_by_id(self, medal_id):
-        return self.medals_collection.find_one({'_id': ObjectId(medal_id)})
+        try:
+            return self.medals_collection.find_one({'_id': ObjectId(medal_id)})
+        except Exception as e:
+            print(f"Errore: {e}")
+            return None
 
     def create_medal(self, data):
         result = self.medals_collection.insert_one(data)

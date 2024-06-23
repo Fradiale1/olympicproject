@@ -13,7 +13,11 @@ class ResultRepository:
         return list(self.results_collection.find())
 
     def get_result_by_id(self, result_id):
-        return self.results_collection.find_one({'_id': ObjectId(result_id)})
+        try:
+            return self.results_collection.find_one({'_id': ObjectId(result_id)})
+        except Exception as e:
+            print(f"Errore: {e}")
+            return None
 
     def create_result(self, data):
         result = self.results_collection.insert_one(data)

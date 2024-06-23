@@ -11,7 +11,11 @@ class AthleteRepository:
         return list(self.athletes_collection.find())
 
     def get_athlete_by_id(self, athlete_id):
-        return self.athletes_collection.find_one({'_id': ObjectId(athlete_id)})
+        try:
+            return self.athletes_collection.find_one({'_id': ObjectId(athlete_id)})
+        except Exception as e:
+            print(f"Errore: {e}")
+            return None
 
     def create_athlete(self, name, sport, age):
         athlete = {

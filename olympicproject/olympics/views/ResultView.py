@@ -34,10 +34,21 @@ class ResultView(View):
         return JsonResponse(data, safe=False)
 
 
-    @request_mapping("/getById/<uuid:result_id>", method="get") #@get("/{result_id}")
+    @request_mapping("/getById/<str:result_id>", method="get") #@get("/{result_id}")
     def get_result_by_id(self, request, result_id):
         result = self.result_repository.get_result_by_id(result_id)
-        data = {"id": str(result._id), "athlete": str(result.athlete), "event": result.event, "performance": result.performance, "rank": result.rank}
+        athletes_names=''
+        result_athletes = result.get('athletes','')
+        if(result_athletes != ''):
+            athletes_list = eval(result_athletes)
+            athletes_names = [athlete[0] for athlete in athletes_list]
+        data = {
+                'id': str(result['_id']),  # Converti ObjectId in stringa per JSON
+                'discipline_title': str(result.get('discipline_title','')),  # Utilizza get per evitare KeyError
+                'country_name': result.get('country_name',''), # Utilizza get per evitare KeyError
+                'athlet': athletes_names,  # Utilizza get per evitare KeyError
+                'medal_type': result.get('medal_type','')  # Utilizza get per evitare KeyError
+            }
         return JsonResponse(data)
 
     @request_mapping("/create/", method="post")

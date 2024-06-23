@@ -10,8 +10,12 @@ class HostRepository:
     def get_all_hosts(self):
         return list(self.hosts_collection.find())
 
-    def get_host_by_id(self, athlete_id):
-        return self.hosts_collection.find_one({'_id': ObjectId(athlete_id)})
+    def get_host_by_id(self, host_id):
+        try:
+            return self.hosts_collection.find_one({'_id': ObjectId(host_id)})
+        except Exception as e:
+            print(f"Errore: {e}")
+            return None
 
     def create_host(self, game_slug, game_end_date, game_start_date, game_location, game_name, game_season, game_year):
         host = {
