@@ -47,7 +47,7 @@ class AthleteView(View):
             }
         return JsonResponse(data)
     
-    @request_mapping("/create/", method="post")
+    @request_mapping("/create", method="post")
     def create_athlete(self, request):
         data = request.POST
         athlete = self.athlete_repository.create_athlete(data.get('name'), data.get('sport'), data.get('age'))

@@ -50,6 +50,43 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+### per postman (inizio)
+CSRF_COOKIE_SECURE = False
+
+CSRF_COOKIE_HTTPONLY = True
+
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOW_HEADERS = [
+    'access-control-allow-credentials',
+    'content-type',
+    'HTTP_X_CSRFTOKEN',
+    'AUTHORIZATION'
+]
+
+CORS_ORIGIN_WHITELIST = [
+    'http://localhost:8000/',
+    '*'
+]
+
+CORS_ORIGIN_ALLOW_ALL = True
+
+CORS_ALLOWED_ORIGINS = [
+]
+
+CSRF_COOKIE_DOMAIN = [
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:8000',
+    'http://*'
+]
+
+ALLOWED_HOSTS = [
+'*',
+]
+### per postman (fine)
+
 ROOT_URLCONF = 'olympicproject.urls'
 
 TEMPLATES = [
