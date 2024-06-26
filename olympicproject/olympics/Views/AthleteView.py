@@ -27,9 +27,13 @@ class AthleteView(View):
 
             athlete_data = {
                 'id': str(athlete['_id']),  # Converti ObjectId in stringa per JSON
-                'name': athlete.get('athlete_full_name', ''),  # Utilizza get per evitare KeyError
-                'prime_olimpiadi': athlete.get('first_game', ''),  # Utilizza get per evitare KeyError
-                'anno_nascita': athlete.get('athlete_year_birth', '')  # Utilizza get per evitare KeyError
+                'athlete_url': athlete.get('athlete_url',''),
+                'athlete_full_name': athlete.get('athlete_full_name', ''),
+                'game_partecipations': athlete.get('game_partecipations',''),
+                'first_game': athlete.get('first_game',''),
+                'athlete_year_birth': athlete.get('athlete_year_birth',''),
+                'athlete_medals': athlete.get('athlete_medals',''),
+                'bio': athlete.get('bio','')
             }
             data.append(athlete_data)
 
@@ -40,10 +44,14 @@ class AthleteView(View):
         athlete = self.athlete_repository.get_athlete_by_id(athlete_id)
         #data = {"id": str(athlete._id), "name": athlete.name, "sport": athlete.sport, "age": athlete.age}
         data = {
-                'id': str(athlete['_id']),  # Converti ObjectId in stringa per JSON
-                'name': athlete.get('athlete_full_name', ''),  # Utilizza get per evitare KeyError
-                'prime_olimpiadi': athlete.get('first_game', ''),  # Utilizza get per evitare KeyError
-                'anno_nascita': athlete.get('athlete_year_birth', '')  # Utilizza get per evitare KeyError
+                'id': str(athlete['_id']),  
+                'athlete_url': athlete.get('athlete_url',''),
+                'athlete_full_name': athlete.get('athlete_full_name', ''),
+                'game_partecipations': athlete.get('game_partecipations',''),
+                'first_game': athlete.get('first_game',''),
+                'athlete_year_birth': athlete.get('athlete_year_birth',''),
+                'athlete_medals': athlete.get('athlete_medals',''),
+                'bio': athlete.get('bio','')
             }
         return JsonResponse(data)
     
