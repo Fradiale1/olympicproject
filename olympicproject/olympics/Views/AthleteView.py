@@ -50,14 +50,49 @@ class AthleteView(View):
     @request_mapping("/create", method="post")
     def create_athlete(self, request):
         data = request.POST
-        athlete = self.athlete_repository.create_athlete(data.get('athlete_url'),data.get('athlete_full_name'), data.get('game_partecipations'), data.get('first_game'), data.get('athlete_year_birth'), data.get('athlete_medals'), data.get('bio'))
-        return JsonResponse({"id": str(athlete._id), "athlete_url": athlete.get('athlete_url',''), "athlete_full_name": athlete.get('athlete_full_name', ''), "game_partecipations": athlete.get('game_partecipations',''), "first_game": athlete.get('first_game',''), "athlete_year_birth": athlete.get('athlete_year_birth',''), "athlete_medals": athlete.get('athlete_medals',''), "bio": athlete.get('bio','')})
+        athlete = self.athlete_repository.create_athlete(
+            data.get('athlete_url'),
+            data.get('athlete_full_name'),
+            data.get('game_partecipations'),
+            data.get('first_game'),
+            data.get('athlete_year_birth'),
+            data.get('athlete_medals'),
+            data.get('bio')
+        )
+        return JsonResponse({
+            "id": str(athlete['_id']),
+            "athlete_url": athlete.get('athlete_url',''),
+            "athlete_full_name": athlete.get('athlete_full_name', ''),
+            "game_partecipations": athlete.get('game_partecipations',''),
+            "first_game": athlete.get('first_game',''),
+            "athlete_year_birth": athlete.get('athlete_year_birth',''),
+            "athlete_medals": athlete.get('athlete_medals',''),
+            "bio": athlete.get('bio','')
+        })
 
     @request_mapping("/update/<str:athlete_id>", method="post")
     def update_athlete(self, request, athlete_id):
         data = request.POST
-        athlete = self.athlete_repository.update_athlete(athlete_id, data.get('athlete_url'),data.get('athlete_full_name'), data.get('game_partecipations'), data.get('first_game'), data.get('athlete_year_birth'), data.get('athlete_medals'), data.get('bio'))
-        return JsonResponse({"id": str(athlete._id), "athlete_url": athlete.get('athlete_url',''), "athlete_full_name": athlete.get('athlete_full_name', ''), "game_partecipations": athlete.get('game_partecipations',''), "first_game": athlete.get('first_game',''), "athlete_year_birth": athlete.get('athlete_year_birth',''), "athlete_medals": athlete.get('athlete_medals',''), "bio": athlete.get('bio','')})
+        athlete = self.athlete_repository.update_athlete(
+            athlete_id, 
+            data.get('athlete_url'),
+            data.get('athlete_full_name'),
+            data.get('games_partecipations'),
+            data.get('first_game'),
+            data.get('athlete_year_birth'),
+            data.get('athlete_medals'),
+            data.get('bio')
+        )
+        return JsonResponse({
+            "id": str(athlete['_id']),
+            "athlete_url": athlete.get('athlete_url',''),
+            "athlete_full_name": athlete.get('athlete_full_name', ''),
+            "games_partecipations": athlete.get('games_partecipations',''),
+            "first_game": athlete.get('first_game',''),
+            "athlete_year_birth": athlete.get('athlete_year_birth',''),
+            "athlete_medals": athlete.get('athlete_medals',''),
+            "bio": athlete.get('bio','')
+        })
 
     @request_mapping("/delete/<str:athlete_id>", method="get")
     def delete_athlete(self, request, athlete_id):
