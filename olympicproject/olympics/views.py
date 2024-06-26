@@ -35,3 +35,4 @@ def charts(request):
 
 def tables(request):
     return render(request, 'utils/tables.html')
+

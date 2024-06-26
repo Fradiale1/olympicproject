@@ -20,6 +20,7 @@ urlpatterns = [
     path('', views.index, name='index'),
 
 
+
     #path del template
     path('static_navigation', views.static_navigation, name='static_navigation'),
     path('light_sidenav', views.light_sidenav, name='light_sidenav'),
@@ -31,6 +32,7 @@ urlpatterns = [
     path('internal_server_error', views.internal_server_error, name='internal_server_error'),
     path('charts', views.charts, name='charts'),
     path('tables', views.tables, name='tables'),
+    
 
     #Path per la registrazione di tutte le View del Backend funzionante con request mapping. Si crea una classe view, si definiscono le request mapping in questa classe creata
     #e si registra la view creata in urlpattern
