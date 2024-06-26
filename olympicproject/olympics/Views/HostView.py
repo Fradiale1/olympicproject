@@ -21,10 +21,14 @@ class HostView(View):
         for host in hosts:
 
             host_data = {
-                'id': str(host['_id']),  # Converti ObjectId in stringa per JSON
-                'nome': host.get('game_name', ''),  # Utilizza get per evitare KeyError
-                'country': host.get('game_location', ''),  # Utilizza get per evitare KeyError
-                'year': host.get('game_year', '')  # Utilizza get per evitare KeyError
+                'id': str(host['_id']),
+                'game_slug': host.get('game_slug',''),
+                'game_end_date': host.get('game_end_date',''),
+                'game_start_date': host.get('game_start_date',''),
+                'game_location': host.get('game_location',''),
+                'game_name': host.get('game_name', ''),
+                'game_season': host.get('game_season', ''),
+                'game_year': host.get('game_year', '')
             }
             data.append(host_data)
 
@@ -34,26 +38,65 @@ class HostView(View):
     def get_host_by_id(self, request, host_id):
         host = self.host_repository.get_host_by_id(host_id)
         data = {
-                'id': str(host['_id']),  # Converti ObjectId in stringa per JSON
-                'nome': host.get('game_name', ''),  # Utilizza get per evitare KeyError
-                'country': host.get('game_location', ''),  # Utilizza get per evitare KeyError
-                'year': host.get('game_year', '')  # Utilizza get per evitare KeyError
+                'id': str(host['_id']),
+                'game_slug': host.get('game_slug',''),
+                'game_end_date': host.get('game_end_date',''),
+                'game_start_date': host.get('game_start_date',''),
+                'game_location': host.get('game_location',''),
+                'game_name': host.get('game_name', ''),
+                'game_season': host.get('game_season', ''),
+                'game_year': host.get('game_year', '')
             }
         return JsonResponse(data)
 
-    @request_mapping("/create/", method="post")
+    @request_mapping("/create", method="post")
     def create_host(self, request):
         data = request.POST
-        host = self.host_repository.create_host(data.get('city'), data.get('country'), data.get('year'))
-        return JsonResponse({"id": str(host._id), "city": host.city, "country": host.country, "year": host.year})
+        host = self.host_repository.create_host(
+            data.get('game_slug'),
+            data.get('game_end_date'),
+            data.get('game_start_date'),
+            data.get('game_location'),
+            data.get('game_name'),
+            data.get('game_season'),
+            data.get('game_year')
+        )
+        return JsonResponse({
+            "id": str(host['_id']),
+            'game_slug': host.get('game_slug',''),
+            'game_end_date': host.get('game_end_date',''),
+            'game_start_date': host.get('game_start_date',''),
+            'game_location': host.get('game_location',''),
+            'game_name': host.get('game_name', ''),
+            'game_season': host.get('game_season', ''),
+            'game_year': host.get('game_year', '')
+        })
 
     @request_mapping("/update/<str:host_id>", method="post")
     def update_host(self, request, host_id):
         data = request.POST
-        host = self.host_repository.update_host(host_id, data.get('city'), data.get('country'), data.get('year'))
-        return JsonResponse({"id": str(host._id), "city": host.city, "country": host.country, "year": host.year})
+        host = self.host_repository.update_host(
+            host_id, 
+            data.get('game_slug'),
+            data.get('game_end_date'),
+            data.get('game_start_date'),
+            data.get('game_location'),
+            data.get('game_name'),
+            data.get('game_season'),
+            data.get('game_year')
+        )
+        return JsonResponse({
+            "id": str(host['_id']), 
+            'game_slug': host.get('game_slug',''),
+            'game_end_date': host.get('game_end_date',''),
+            'game_start_date': host.get('game_start_date',''),
+            'game_location': host.get('game_location',''),
+            'game_name': host.get('game_name', ''),
+            'game_season': host.get('game_season', ''),
+            'game_year': host.get('game_year', '')
+        })
 
-    @request_mapping("/delete/<str:host_id>", method="post")
+    @request_mapping("/delete/<str:host_id>", method="get")
     def delete_host(self, request, host_id):
         self.host_repository.delete_host(host_id)
-        return JsonResponse({"message": "Host deleted"})
+        return JsonResponse({"message": "Città ospite eliminata"})

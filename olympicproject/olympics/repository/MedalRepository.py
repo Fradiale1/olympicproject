@@ -1,11 +1,9 @@
-from olympics.models import Medal
-from bson import ObjectId
-import pymongo
-from django.http import JsonResponse
+from pymongo import MongoClient, ReturnDocument
+from bson.objectid import ObjectId
 
 class MedalRepository:
     def __init__(self, db_url, db_name):
-        self.client = pymongo.MongoClient(db_url)
+        self.client = MongoClient(db_url)
         self.db = self.client[db_name]
         self.medals_collection = self.db['medals']
 
@@ -23,24 +21,66 @@ class MedalRepository:
             print(f"Errore nel recuperare la medaglia con ID {medal_id}: {e}")
             return None
 
-    def create_medal(self, data):
+    def create_medal(self, discipline_title, slug_game, event_title, event_gender, medal_type, participant_type, participant_title, athlete_url, athlete_full_name, country_name, country_code, country_3_letter_code):
+        medal = {
+            'discipline_title': discipline_title,
+            'slug_game': slug_game,
+            'event_title': event_title,
+            'event_gender': event_gender,
+            'medal_type': medal_type,
+            'participant_type': participant_type,
+            'participant_title': participant_title,
+            'athlete_url': athlete_url,
+            'athlete_full_name': athlete_full_name,
+            'country_name': country_name,
+            'country_code': country_code,
+            'country_3_letter_code': country_3_letter_code
+        }
         try:
-            result = self.medals_collection.insert_one(data)
-            return result.inserted_id
+            result = self.medals_collection.insert_one(medal)
+            medal['_id'] = result.inserted_id
+            return medal
         except Exception as e:
             print(f"Errore nel creare la medaglia: {e}")
             return None
 
-    def update_medal(self, medal_id, data):
+    def update_medal(self, medal_id, discipline_title, slug_game, event_title, event_gender, medal_type, participant_type, participant_title, athlete_url, athlete_full_name, country_name, country_code, country_3_letter_code):
+        update_fields = {}
+        if discipline_title:
+            update_fields['discipline_title'] = discipline_title
+        if slug_game:
+            update_fields['slug_game'] = slug_game
+        if event_title:
+            update_fields['event_title'] = event_title
+        if event_gender:
+            update_fields['event_gender'] = event_gender
+        if medal_type:
+            update_fields['medal_type'] = medal_type
+        if participant_type:
+            update_fields['participant_type'] = participant_type
+        if participant_title:
+            update_fields['participant_title'] = participant_title
+        if athlete_url:
+            update_fields['athlete_url'] = athlete_url
+        if athlete_full_name:
+            update_fields['athlete_full_name'] = athlete_full_name
+        if country_name:
+            update_fields['country_name'] = country_name
+        if country_code:
+            update_fields['country_code'] = country_code
+        if country_3_letter_code:
+            update_fields['country_3_letter_code'] = country_3_letter_code
+
         try:
-            result = self.medals_collection.update_one(
+            result = self.medals_collection.find_one_and_update(
                 {'_id': ObjectId(medal_id)},
-                {'$set': data}
+                {'$set': update_fields},
+                return_document=ReturnDocument.AFTER
             )
-            return result.modified_count > 0
+            return result
         except Exception as e:
             print(f"Errore nel aggiornare la medaglia con ID {medal_id}: {e}")
-            return False
+            return None
 
     def delete_medal(self, medal_id):
         try:

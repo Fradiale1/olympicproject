@@ -24,11 +24,18 @@ class ResultView(View):
                 athletes_list = eval(result_athletes)
                 athletes_names = [athlete[0] for athlete in athletes_list]
             result_data = {
-                'id': str(result['_id']),  # Converti ObjectId in stringa per JSON
-                'discipline_title': str(result.get('discipline_title','')),  # Utilizza get per evitare KeyError
-                'country_name': result.get('country_name',''), # Utilizza get per evitare KeyError
-                'athlet': athletes_names,  # Utilizza get per evitare KeyError
-                'medal_type': result.get('medal_type','')  # Utilizza get per evitare KeyError
+                'id': str(result['_id']),
+                'discipline_title': result.get('discipline_title',''),
+                'event_title': result.get('event_title',''),
+                'slug_game': result.get('slug_game',''),
+                'participant_type': result.get('participant_type',''),
+                'medal_type': result.get('medal_type',''),
+                'athletes': athletes_names,
+                'rank_equal': result.get('rank_equal',''),
+                'rank_position': result.get('rank_position',''),
+                'country_name': result.get('country_name',''),
+                'country_code': result.get('country_code',''),
+                'country_3_letter_code': result.get('country_3_letter_code','')
             }
             data.append(result_data)
         return JsonResponse(data, safe=False)
@@ -43,27 +50,85 @@ class ResultView(View):
             athletes_list = eval(result_athletes)
             athletes_names = [athlete[0] for athlete in athletes_list]
         data = {
-                'id': str(result['_id']),  # Converti ObjectId in stringa per JSON
-                'discipline_title': str(result.get('discipline_title','')),  # Utilizza get per evitare KeyError
-                'country_name': result.get('country_name',''), # Utilizza get per evitare KeyError
-                'athlet': athletes_names,  # Utilizza get per evitare KeyError
-                'medal_type': result.get('medal_type','')  # Utilizza get per evitare KeyError
+                'id': str(result['_id']),
+                'discipline_title': result.get('discipline_title',''),
+                'event_title': result.get('event_title',''),
+                'slug_game': result.get('slug_game',''),
+                'participant_type': result.get('participant_type',''),
+                'medal_type': result.get('medal_type',''),
+                'athletes': athletes_names,
+                'rank_equal': result.get('rank_equal',''),
+                'rank_position': result.get('rank_position',''),
+                'country_name': result.get('country_name',''),
+                'country_code': result.get('country_code',''),
+                'country_3_letter_code': result.get('country_3_letter_code','')
             }
         return JsonResponse(data)
 
-    @request_mapping("/create/", method="post")
+    @request_mapping("/create", method="post")
     def create_result(self, request):
         data = request.POST
-        result = self.result_repository.create_result(data.get('athlete'), data.get('event'), data.get('performance'), data.get('rank'))
-        return JsonResponse({"id": str(result._id), "athlete": str(result.athlete), "event": result.event, "performance": result.performance, "rank": result.rank})
+        result = self.result_repository.create_result(
+            data.get('discipline_title'),
+            data.get('event_title'),
+            data.get('slug_game'),
+            data.get('participant_type'),
+            data.get('medal_type'),
+            data.get('athletes'),
+            data.get('rank_equal'),
+            data.get('rank_position'),
+            data.get('country_name'),
+            data.get('country_code'),
+            data.get('country_3_letter_code')
+        )
+        return JsonResponse({
+            'id': str(result['_id']),
+            'discipline_title': result.get('discipline_title',''),
+            'event_title': result.get('event_title',''),
+            'slug_game': result.get('slug_game',''),
+            'participant_type': result.get('participant_type',''),
+            'medal_type': result.get('medal_type',''),
+            'athletes': result.get('athletes',''),
+            'rank_equal': result.get('rank_equal',''),
+            'rank_position': result.get('rank_position',''),
+            'country_name': result.get('country_name',''),
+            'country_code': result.get('country_code',''),
+            'country_3_letter_code': result.get('country_3_letter_code','')
+        })
 
     @request_mapping("/update/<str:result_id>", method="post")
     def update_result(self, request, result_id):
         data = request.POST
-        result = self.result_repository.update_result(result_id, data.get('athlete'), data.get('event'), data.get('performance'), data.get('rank'))
-        return JsonResponse({"id": str(result._id), "athlete": str(result.athlete), "event": result.event, "performance": result.performance, "rank": result.rank})
+        result = self.result_repository.update_result(
+            result_id,
+            data.get('discipline_title'),
+            data.get('event_title'),
+            data.get('slug_game'),
+            data.get('participant_type'),
+            data.get('medal_type'),
+            data.get('athletes'),
+            data.get('rank_equal'),
+            data.get('rank_position'),
+            data.get('country_name'),
+            data.get('country_code'),
+            data.get('country_3_letter_code')
+        )
+        return JsonResponse({
+            'id': str(result['_id']),
+            'discipline_title': result.get('discipline_title',''),
+            'event_title': result.get('event_title',''),
+            'slug_game': result.get('slug_game',''),
+            'participant_type': result.get('participant_type',''),
+            'medal_type': result.get('medal_type',''),
+            'athletes': result.get('athletes',''),
+            'rank_equal': result.get('rank_equal',''),
+            'rank_position': result.get('rank_position',''),
+            'country_name': result.get('country_name',''),
+            'country_code': result.get('country_code',''),
+            'country_3_letter_code': result.get('country_3_letter_code','')
+        })
 
     @request_mapping("/delete/<str:result_id>", method="get")
     def delete_result(self, request, result_id):
         self.result_repository.delete_result(result_id)
-        return JsonResponse({"message": "Result deleted"})
+        return JsonResponse({"message": "Resultato eliminato"})

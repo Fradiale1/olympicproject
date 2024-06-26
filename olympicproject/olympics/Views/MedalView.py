@@ -19,10 +19,19 @@ class MedalView(View):
         data = []
         for medal in medals:
             medal_data = {
-                'id': str(medal['_id']),  # Converti ObjectId in stringa per JSON
-                'medal_type': medal.get('medal_type',''),  # Utilizza get per evitare KeyError
-                'athlete_full_name': medal.get('athlete_full_name',''),  # Utilizza get per evitare KeyError
-                'country_name': medal.get('country_name','')  # Utilizza get per evitare KeyError
+                'id': str(medal['_id']),
+                'discipline_title': medal.get('discipline_title',''),
+                'slug_game': medal.get('slug_game',''),
+                'event_title': medal.get('event_title',''),
+                'event_gender': medal.get('event_gender',''),
+                'medal_type': medal.get('medal_type',''),
+                'participant_type': medal.get('participant_type',''),
+                'participant_title': medal.get('participant_title',''),
+                'athlete_url': medal.get('athlete_url',''),
+                'athlete_full_name': medal.get('athlete_full_name',''),
+                'country_name': medal.get('country_name',''),
+                'country_code': medal.get('country_code',''),
+                'country_3_letter_code': medal.get('country_3_letter_code','')
             }
             data.append(medal_data)
         return JsonResponse(data, safe=False)
@@ -32,26 +41,90 @@ class MedalView(View):
     def get_medal_by_id(self, request, medal_id):
         medal = self.medal_repository.get_medal_by_id(medal_id)
         data = {
-                'id': str(medal['_id']),  # Converti ObjectId in stringa per JSON
-                'medal_type': medal.get('medal_type',''),  # Utilizza get per evitare KeyError
-                'athlete_full_name': medal.get('athlete_full_name',''),  # Utilizza get per evitare KeyError
-                'country_name': medal.get('country_name','')  # Utilizza get per evitare KeyError
+                'id': str(medal['_id']),
+                'discipline_title': medal.get('discipline_title',''),
+                'slug_game': medal.get('slug_game',''),
+                'event_title': medal.get('event_title',''),
+                'event_gender': medal.get('event_gender',''),
+                'medal_type': medal.get('medal_type',''),
+                'participant_type': medal.get('participant_type',''),
+                'participant_title': medal.get('participant_title',''),
+                'athlete_url': medal.get('athlete_url',''),
+                'athlete_full_name': medal.get('athlete_full_name',''),
+                'country_name': medal.get('country_name',''),
+                'country_code': medal.get('country_code',''),
+                'country_3_letter_code': medal.get('country_3_letter_code','')
             }
         return JsonResponse(data)
 
-    @request_mapping("/create/", method="post")
+    @request_mapping("/create", method="post")
     def create_medal(self, request):
         data = request.POST
-        medal = self.medal_repository.create_medal(data.get('athlete'), data.get('event'), data.get('medal_type'))
-        return JsonResponse({"id": str(medal._id), "athlete": str(medal.athlete), "event": medal.event, "medal_type": medal.medal_type})
+        medal = self.medal_repository.create_medal(
+            data.get('discipline_title'),
+            data.get('slug_game'),
+            data.get('event_title'),
+            data.get('event_gender'),
+            data.get('medal_type'),
+            data.get('participant_type'),
+            data.get('participant_title'),
+            data.get('athlete_url'),
+            data.get('athlete_full_name'),
+            data.get('country_name'),
+            data.get('country_code'),
+            data.get('country_3_letter_code')
+        )
+        return JsonResponse({
+            'id': str(medal['_id']), 
+            'discipline_title': medal.get('discipline_title',''),
+            'slug_game': medal.get('slug_game',''),
+            'event_title': medal.get('event_title',''),
+            'event_gender': medal.get('event_gender',''),
+            'medal_type': medal.get('medal_type',''),
+            'participant_type': medal.get('participant_type',''),
+            'participant_title': medal.get('participant_title',''),
+            'athlete_url': medal.get('athlete_url',''),
+            'athlete_full_name': medal.get('athlete_full_name',''),
+            'country_name': medal.get('country_name',''),
+            'country_code': medal.get('country_code',''),
+            'country_3_letter_code': medal.get('country_3_letter_code','')
+        })
 
     @request_mapping("/update/<str:medal_id>", method="post")
     def update_medal(self, request, medal_id):
         data = request.POST
-        medal = self.medal_repository.update_medal(medal_id, data.get('athlete'), data.get('event'), data.get('medal_type'))
-        return JsonResponse({"id": str(medal._id), "athlete": str(medal.athlete), "event": medal.event, "medal_type": medal.medal_type})
+        medal = self.medal_repository.update_medal(
+            medal_id,
+            data.get('discipline_title'),
+            data.get('slug_game'),
+            data.get('event_title'),
+            data.get('event_gender'),
+            data.get('medal_type'),
+            data.get('participant_type'),
+            data.get('participant_title'),
+            data.get('athlete_url'),
+            data.get('athlete_full_name'),
+            data.get('country_name'),
+            data.get('country_code'),
+            data.get('country_3_letter_code')
+        )
+        return JsonResponse({
+            'id': str(medal['_id']), 
+            'discipline_title': medal.get('discipline_title',''),
+            'slug_game': medal.get('slug_game',''),
+            'event_title': medal.get('event_title',''),
+            'event_gender': medal.get('event_gender',''),
+            'medal_type': medal.get('medal_type',''),
+            'participant_type': medal.get('participant_type',''),
+            'participant_title': medal.get('participant_title',''),
+            'athlete_url': medal.get('athlete_url',''),
+            'athlete_full_name': medal.get('athlete_full_name',''),
+            'country_name': medal.get('country_name',''),
+            'country_code': medal.get('country_code',''),
+            'country_3_letter_code': medal.get('country_3_letter_code','')
+        })
 
     @request_mapping("/delete/<str:medal_id>", method="get")
     def delete_medal(self, request, medal_id):
         self.medal_repository.delete_medal(medal_id)
-        return JsonResponse({"message": "Medal deleted"})
+        return JsonResponse({"message": "Medaglia eliminata"})
