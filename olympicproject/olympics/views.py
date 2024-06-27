@@ -1,11 +1,16 @@
 from django.shortcuts import render
+from olympics.Views.AthleteView import AthleteView
+import json
 
 # Create your views here.
 def index(request):
     return render(request, 'index.html')
 
 def athlete(request):
-    return render(request, 'features/athlete.html')
+    athlete_view = AthleteView()
+    athletes_data = athlete_view.get_all_athletes(request).content  # Chiamata alla funzione get_all_athletes
+    athletes = json.loads(athletes_data)  # Decodifica del JSON
+    return render(request, 'features/athlete.html', {'athletes': athletes})
 
 #view per le pagine del template
 def static_navigation(request):

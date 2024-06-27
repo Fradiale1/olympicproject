@@ -9,7 +9,7 @@ class AthleteRepository:
 
     def get_all_athletes(self):
         try:
-            return list(self.athletes_collection.find())
+            return list(self.athletes_collection.find().limit(200))
         except Exception as e:
             print(f"Errore nel recuperare tutti gli atleti: {e}")
             return []
@@ -21,11 +21,11 @@ class AthleteRepository:
             print(f"Errore nel recuperare l'atleta con ID {athlete_id}: {e}")
             return None
 
-    def create_athlete(self, athlete_url, athlete_full_name, games_partecipations, first_game, athlete_year_birth, athlete_medals, bio):
+    def create_athlete(self, athlete_url, athlete_full_name, games_participations, first_game, athlete_year_birth, athlete_medals, bio):
         athlete = {
             'athlete_url': athlete_url, 
             'athlete_full_name': athlete_full_name, 
-            'games_partecipations': games_partecipations, 
+            'games_participations': games_participations, 
             'first_game': first_game, 
             'athlete_year_birth': athlete_year_birth, 
             'athlete_medals': athlete_medals, 
@@ -39,14 +39,14 @@ class AthleteRepository:
             print(f"Errore nel creare l'atleta: {e}")
             return None
 
-    def update_athlete(self, athlete_id, athlete_url=None, athlete_full_name=None, games_partecipations=None, first_game=None, athlete_year_birth=None, athlete_medals=None, bio=None):
+    def update_athlete(self, athlete_id, athlete_url=None, athlete_full_name=None, games_participations=None, first_game=None, athlete_year_birth=None, athlete_medals=None, bio=None):
         update_fields = {}
         if athlete_url:
             update_fields['athlete_url'] = athlete_url
         if athlete_full_name:
             update_fields['athlete_full_name'] = athlete_full_name
-        if games_partecipations:
-            update_fields['games_partecipations'] = games_partecipations
+        if games_participations:
+            update_fields['games_participations'] = games_participations
         if first_game:
             update_fields['first_game'] = first_game
         if athlete_year_birth:
