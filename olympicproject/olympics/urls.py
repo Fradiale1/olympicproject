@@ -18,6 +18,7 @@ urlpattern.register(ResultView)
 urlpatterns = [
     #path('', views.olympics),
     path('', views.index, name='index'),
+    path('atleti', views.athlete, name='atleti'),
 
 
 

@@ -4,6 +4,8 @@ from django.shortcuts import render
 def index(request):
     return render(request, 'index.html')
 
+def athlete(request):
+    return render(request, 'features/athlete.html')
 
 #view per le pagine del template
 def static_navigation(request):
