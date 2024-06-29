@@ -12,6 +12,12 @@ def athlete(request):
     athletes = json.loads(athletes_data)  # Decodifica del JSON
     return render(request, 'features/athlete.html', {'athletes': athletes})
 
+ #def host(request):
+ #   host_view = HostView()
+ #   hosts_data = host_view.get_all_hosts(request).content  # Chiamata alla funzione get_all_athletes
+ #   hosts = json.loads(hosts_data)  # Decodifica del JSON
+ #   return render(request, 'features/athlete.html', {'hosts': hosts})
+
 #view per le pagine del template
 def static_navigation(request):
     return render(request, 'utils/layout-static.html')

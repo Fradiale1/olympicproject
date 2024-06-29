@@ -43,7 +43,7 @@
                     <td>{{ athlete.athlete_year_birth }}</td>
                     <td>{{ athlete.athlete_medals }}</td>
                     <td>
-                        <button onclick="editAthlete(athlete.id)" class="btn btn-primary">Edit</button>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal">Modifica</button>
                         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Cancella</button>
                     </td>
                 </tr>
@@ -56,7 +56,7 @@
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="deleteModalLabel">Conferma Eliminazione</h1>
+          <h1 class="modal-title fs-5" id="deleteModalLabel">Cancellazione Atleta</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
@@ -68,5 +68,41 @@
         </div>
       </div>
     </div>
-  </div>
+</div>
+<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="updateModalLabel">Modifica Atleta</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="mb-3">
+                <label for="Fullname" class="form-label">Nome e Cognome</label>
+                <input class="form-control" id="Fullname" type="text" placeholder="Nome e Cognome" aria-label="default input example">
+            </div>
+            <div class="mb-3">
+                <label for="NPart" class="form-label">Numero di Partecipazioni</label>
+                <input class="form-control" id="NPart" type="number" placeholder="Numero di Partecipazioni" aria-label="default input example">
+            </div>
+            <div class="mb-3">
+                <label for="FirstGame" class="form-label">Prima Apparizione</label>
+                <input class="form-control" id="FirstGame" placeholder="Prima Apparizione" aria-label="default input example">
+            </div>
+            <div class="mb-3">
+                <label for="YearBirth" class="form-label">Anno di Nascita</label>
+                <input class="form-control" id="YearBirth" type="number" placeholder="Anno di Nascita" aria-label="default input example">
+            </div>
+            <div class="mb-3">
+                <label for="Medals" class="form-label">Medaglie</label>
+                <input class="form-control" id="Medals" type="text" placeholder="Medaglie" aria-label="default input example">
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+          <button onclick="updateAthlete(athlete.id)" class="btn btn-primary">Modifica</button>
+        </div>
+      </div>
+    </div>
+</div>
 {% endblock %}
