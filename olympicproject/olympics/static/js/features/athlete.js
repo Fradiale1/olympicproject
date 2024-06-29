@@ -23,5 +23,9 @@ window.onload = function() {
 };
 
 function openDeleteModal(athleteId) {
-    document.querySelector('#athleteIdInput').value = athleteId;
+    document.querySelector('#athleteIdInputDelete').value = athleteId;
+}
+
+function openDeleteModal(athleteId) {
+    document.querySelector('#athleteIdInputUpdate').value = athleteId;
 }

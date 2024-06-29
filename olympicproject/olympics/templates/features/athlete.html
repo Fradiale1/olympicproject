@@ -63,7 +63,7 @@
                 </div>
                 <div class="modal-body">
                     Sei sicuro di voler eliminare questo atleta?
-                    <input type="hidden" name="athlete_id" id="athleteIdInput">
+                    <input type="hidden" name="athlete_id_delete" id="athleteIdInputDelete">
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
@@ -83,6 +83,7 @@
         <div class="modal-body">
             <form id="updateForm" method="post" action="{% url 'update_athlete' %}">
                 {% csrf_token %}
+                <input type="hidden" name="athlete_id_update" id="athleteIdInputUpdate">
                 <div class="mb-3">
                     <label for="Fullname" class="form-label">Nome e Cognome</label>
                     <input class="form-control" id="Fullname" type="text" placeholder="Nome e Cognome" aria-label="default input example">

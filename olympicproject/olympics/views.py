@@ -34,7 +34,7 @@ def update_athlete(request):
 @csrf_exempt
 def delete_athlete(request):
     if request.method == 'POST':
-        athlete_id = request.POST.get('athlete_id')
+        athlete_id = request.POST.get('athlete_id_delete')
         athlete_view = AthleteView()
         delete_athlete_message = athlete_view.delete_athlete(request, athlete_id).content
 
