@@ -43,7 +43,7 @@
                     <td>{{ athlete.athlete_year_birth }}</td>
                     <td>{{ athlete.athlete_medals }}</td>
                     <td>
-                        <!--<button onclick="editAthlete({{ athlete.id }})" class="btn btn-primary">Edit</button>-->
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal" onclick="openUpdateModal('{{ athlete.id }}')">Modifica</button>
                         <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="openDeleteModal('{{ athlete.id }}')">Cancella</button>
                     </td>
                 </tr>
