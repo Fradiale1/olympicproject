@@ -43,8 +43,8 @@
                     <td>{{ athlete.athlete_year_birth }}</td>
                     <td>{{ athlete.athlete_medals }}</td>
                     <td>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal">Modifica</button>
-                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Cancella</button>
+                        <!--<button onclick="editAthlete({{ athlete.id }})" class="btn btn-primary">Edit</button>-->
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="openDeleteModal('{{ athlete.id }}')">Cancella</button>
                     </td>
                 </tr>
                 {% endfor %}
@@ -54,19 +54,23 @@
 </div>
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="deleteModalLabel">Cancellazione Atleta</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="modal-content">
+            <form id="deleteForm" method="post" action="{% url 'delete_athlete' %}">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="deleteModalLabel">Conferma Eliminazione</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Sei sicuro di voler eliminare questo atleta?
+                    <input type="hidden" name="athlete_id" id="athleteIdInput">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+                    <button type="submit" class="btn btn-danger">Confermo</button>
+                </div>
+            </form>
         </div>
-        <div class="modal-body">
-          Sei sicuro di voler eliminare questo atleta?
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
-          <button onclick="deleteAthlete(athlete.id)" class="btn btn-danger">Confermo</button>
-        </div>
-      </div>
     </div>
 </div>
 <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">

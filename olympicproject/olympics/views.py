@@ -1,5 +1,9 @@
-from django.shortcuts import render
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
+from .models import Athlete
 from olympics.Views.AthleteView import AthleteView
+from django.views.decorators.csrf import csrf_protect, csrf_exempt
 import json
 
 # Create your views here.
@@ -11,6 +15,32 @@ def athlete(request):
     athletes_data = athlete_view.get_all_athletes(request).content  # Chiamata alla funzione get_all_athletes
     athletes = json.loads(athletes_data)  # Decodifica del JSON
     return render(request, 'features/athlete.html', {'athletes': athletes})
+
+@csrf_exempt
+def delete_athlete(request):
+    if request.method == 'POST':
+        print(request.POST)
+        athlete_id = request.POST.get('athlete_id')
+        athlete_view = AthleteView()
+        athlete_view.delete_athlete(request, athlete_id).content
+        # Dati da passare al frontend
+        dati_da_passare = {
+            'message': "Atleta Eliminato"
+        }
+        
+        # Memorizza i dati nella sessione
+        request.session['dati_da_passare'] = dati_da_passare
+        
+
+        # Esegui il reindirizzamento alla vista di destinazione
+        #return redirect('atleti')
+        url = reverse('atleti')
+        response = HttpResponseRedirect(url)
+        response.set_cookie('message', 'Atleta Eliminato')
+        return response
+        
+
+    return HttpResponse(status=405)
 
  #def host(request):
  #   host_view = HostView()

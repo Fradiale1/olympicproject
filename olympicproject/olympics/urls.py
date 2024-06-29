@@ -19,6 +19,7 @@ urlpatterns = [
     #path('', views.olympics),
     path('', views.index, name='index'),
     path('atleti', views.athlete, name='atleti'),
+    path('delete-athlete/', views.delete_athlete, name='delete_athlete'),
 
 
 
