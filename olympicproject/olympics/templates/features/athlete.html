@@ -81,26 +81,29 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            <div class="mb-3">
-                <label for="Fullname" class="form-label">Nome e Cognome</label>
-                <input class="form-control" id="Fullname" type="text" placeholder="Nome e Cognome" aria-label="default input example">
-            </div>
-            <div class="mb-3">
-                <label for="NPart" class="form-label">Numero di Partecipazioni</label>
-                <input class="form-control" id="NPart" type="number" placeholder="Numero di Partecipazioni" aria-label="default input example">
-            </div>
-            <div class="mb-3">
-                <label for="FirstGame" class="form-label">Prima Apparizione</label>
-                <input class="form-control" id="FirstGame" placeholder="Prima Apparizione" aria-label="default input example">
-            </div>
-            <div class="mb-3">
-                <label for="YearBirth" class="form-label">Anno di Nascita</label>
-                <input class="form-control" id="YearBirth" type="number" placeholder="Anno di Nascita" aria-label="default input example">
-            </div>
-            <div class="mb-3">
-                <label for="Medals" class="form-label">Medaglie</label>
-                <input class="form-control" id="Medals" type="text" placeholder="Medaglie" aria-label="default input example">
-            </div>
+            <form id="updateForm" method="post" action="{% url 'update_athlete' %}">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="Fullname" class="form-label">Nome e Cognome</label>
+                    <input class="form-control" id="Fullname" type="text" placeholder="Nome e Cognome" aria-label="default input example">
+                </div>
+                <div class="mb-3">
+                    <label for="NPart" class="form-label">Numero di Partecipazioni</label>
+                    <input class="form-control" id="NPart" type="number" placeholder="Numero di Partecipazioni" aria-label="default input example">
+                </div>
+                <div class="mb-3">
+                    <label for="FirstGame" class="form-label">Prima Apparizione</label>
+                    <input class="form-control" id="FirstGame" placeholder="Prima Apparizione" aria-label="default input example">
+                </div>
+                <div class="mb-3">
+                    <label for="YearBirth" class="form-label">Anno di Nascita</label>
+                    <input class="form-control" id="YearBirth" type="number" placeholder="Anno di Nascita" aria-label="default input example">
+                </div>
+                <div class="mb-3">
+                    <label for="Medals" class="form-label">Medaglie</label>
+                    <input class="form-control" id="Medals" type="text" placeholder="Medaglie" aria-label="default input example">
+                </div>
+            </form>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>

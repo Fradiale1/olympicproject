@@ -17,29 +17,34 @@ def athlete(request):
     return render(request, 'features/athlete.html', {'athletes': athletes})
 
 @csrf_exempt
-def delete_athlete(request):
+def update_athlete(request):
     if request.method == 'POST':
-        print(request.POST)
         athlete_id = request.POST.get('athlete_id')
         athlete_view = AthleteView()
-        athlete_view.delete_athlete(request, athlete_id).content
-        # Dati da passare al frontend
-        dati_da_passare = {
-            'message': "Atleta Eliminato"
-        }
-        
-        # Memorizza i dati nella sessione
-        request.session['dati_da_passare'] = dati_da_passare
-        
+
+        url = reverse('atleti')
+        response = HttpResponseRedirect(url)
+        response.set_cookie('messaggio', 'Atleta aggiornato')
+        response.set_cookie('codice_messaggio', '200')
+        return response
+    
+    return HttpResponse(status=405)
+
+@csrf_exempt
+def delete_athlete(request):
+    if request.method == 'POST':
+        athlete_id = request.POST.get('athlete_id')
+        athlete_view = AthleteView()
+        delete_athlete_message = athlete_view.delete_athlete(request, athlete_id).content
 
         # Esegui il reindirizzamento alla vista di destinazione
         #return redirect('atleti')
         url = reverse('atleti')
         response = HttpResponseRedirect(url)
-        response.set_cookie('message', 'Atleta Eliminato')
+        response.set_cookie('messaggio', 'Atleta Eliminato')
+        response.set_cookie('codice_messaggio', '200')
         return response
-        
-
+    
     return HttpResponse(status=405)
 
  #def host(request):
