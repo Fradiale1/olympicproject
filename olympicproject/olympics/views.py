@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from .models import Athlete
 from olympics.Views.AthleteView import AthleteView
+from olympics.Views.HostView import HostView
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 import json
 
@@ -52,6 +53,13 @@ def delete_athlete(request):
  #   hosts_data = host_view.get_all_hosts(request).content  # Chiamata alla funzione get_all_athletes
  #   hosts = json.loads(hosts_data)  # Decodifica del JSON
  #   return render(request, 'features/athlete.html', {'hosts': hosts})
+def host(request):
+    host_view = HostView()
+    host_data = host_view.get_all_hosts(request).content  # Chiamata alla funzione get_all_hosts
+    hosts = json.loads(host_data)  # Decodifica del JSON
+    return render(request, 'features/host.html', {'hosts': hosts})
+
+
 
 #view per le pagine del template
 def static_navigation(request):

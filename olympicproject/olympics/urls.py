@@ -23,6 +23,10 @@ urlpatterns = [
     path('atleti', views.athlete, name='atleti'),
     path('update-athlete/', views.update_athlete, name='update_athlete'),
     path('delete-athlete/', views.delete_athlete, name='delete_athlete'),
+    
+    #host
+    path('host', views.host, name='host'),
+
 
 
 

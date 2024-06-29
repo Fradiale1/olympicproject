@@ -10,6 +10,25 @@
  * Copyright 2011-2022 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
+
+ .search-row th {
+  position: relative;
+  background-image: none !important; /* Nasconde l'immagine di sfondo usata per le freccette */
+}
+.search-row .sorting,
+.search-row .sorting_asc,
+.search-row .sorting_desc {
+  background-image: none !important; /* Nasconde l'immagine di sfondo usata per le freccette */
+}
+
+/* Assicurati che le freccette di ordinamento siano visibili solo nella prima riga */
+thead tr:first-child th {
+  position: relative;
+}
+
+
+
+
 :root {
   --bs-blue: #0d6efd;
   --bs-indigo: #6610f2;

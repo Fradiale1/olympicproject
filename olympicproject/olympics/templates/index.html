@@ -11,6 +11,21 @@
         <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
         <link href="static/css/styles.css" rel="stylesheet" />
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+
+       
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css"/>
+
+
+     <!--  <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
+        <script src="https://cdn.datatables.net/searchpanes/2.3.1/js/dataTables.searchPanes.js"></script>
+        <script src="https://cdn.datatables.net/searchpanes/2.3.1/js/searchPanes.dataTables.js"></script>
+        <script src="https://cdn.datatables.net/select/2.0.3/js/dataTables.select.js"></script>
+        <script src="https://cdn.datatables.net/select/2.0.3/js/select.dataTables.js"></script>
+        <link href="https://cdn.datatables.net/2.0.8/css/dataTables.dataTables.css" rel="stylesheet" />
+        <link href="https://cdn.datatables.net/searchpanes/2.3.1/css/searchPanes.dataTables.css" rel="stylesheet" />
+        <link href="https://cdn.datatables.net/select/2.0.3/css/select.dataTables.css" rel="stylesheet" /> -->
         {% block head %}
         {% endblock %}
     </head>
@@ -51,6 +66,10 @@
                             <a class="nav-link" href="{% url 'atleti' %}">
                                 <div class="sb-nav-link-icon"><i class="fa-solid fa-person-running"></i></div>
                                 Atleti
+                            </a>
+                            <a class="nav-link" href="{% url 'host' %}">
+                                <div class="sb-nav-link-icon"><i class="fa-solid fa-person-running"></i></div>
+                                Host
                             </a>
                             <div class="sb-sidenav-menu-heading">Core</div>
                             <a class="nav-link" href="{% url 'index' %}">
