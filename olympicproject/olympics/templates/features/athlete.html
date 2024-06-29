@@ -2,6 +2,10 @@
 
 {% load static %}
 
+{% block head %}
+<script type="text/javascript" src="{% static 'js/features/athlete.js' %}"></script>
+{% endblock %}
+
 {% block content %}
 <div class="card mb-4">
     <div class="card-header">
@@ -17,6 +21,7 @@
                     <th>First Game</th>
                     <th>Year of Birth</th>
                     <th>Medals</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tfoot>
@@ -26,6 +31,7 @@
                     <th>First Game</th>
                     <th>Year of Birth</th>
                     <th>Medals</th>
+                    <th>Actions</th>
                 </tr>
             </tfoot>
             <tbody>
@@ -36,10 +42,31 @@
                     <td>{{ athlete.first_game }}</td>
                     <td>{{ athlete.athlete_year_birth }}</td>
                     <td>{{ athlete.athlete_medals }}</td>
+                    <td>
+                        <button onclick="editAthlete(athlete.id)" class="btn btn-primary">Edit</button>
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Cancella</button>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
 </div>
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="deleteModalLabel">Conferma Eliminazione</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Sei sicuro di voler eliminare questo atleta?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+          <button onclick="deleteAthlete(athlete.id)" class="btn btn-danger">Confermo</button>
+        </div>
+      </div>
+    </div>
+  </div>
 {% endblock %}
