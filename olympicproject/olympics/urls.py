@@ -21,6 +21,7 @@ urlpatterns = [
 
     #atleti
     path('atleti', views.athlete, name='atleti'),
+    path('create-athlete/', views.create_athlete, name='create_athlete'),
     path('update-athlete/', views.update_athlete, name='update_athlete'),
     path('delete-athlete/', views.delete_athlete, name='delete_athlete'),
     

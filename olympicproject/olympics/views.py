@@ -1,7 +1,6 @@
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
-from .models import Athlete
 from olympics.Views.AthleteView import AthleteView
 from olympics.Views.HostView import HostView
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
@@ -12,13 +11,28 @@ def index(request):
     return render(request, 'index.html')
 
 def athlete(request):
-    athlete_view = AthleteView()
-    athletes_data = athlete_view.get_all_athletes(request).content  # Chiamata alla funzione get_all_athletes
-    athletes = json.loads(athletes_data)  # Decodifica del JSON
-    return render(request, 'features/athlete.html', {'athletes': athletes})
+
+    athletes = json.loads(AthleteView().get_all_athletes(request).content)  # Decodifica del JSON
+    hosts = json.loads(HostView().get_all_hosts(request).content)
+
+    return render(request, 'features/athlete.html', {'athletes': athletes, 'hosts': hosts})
 
 @csrf_exempt
-def update_athlete(request):
+def create_athlete(request): #da fare
+    if request.method == 'POST':
+        athlete_id = request.POST.get('athlete_id')
+        athlete_view = AthleteView()
+
+        url = reverse('atleti')
+        response = HttpResponseRedirect(url)
+        response.set_cookie('messaggio', 'Atleta aggiornato')
+        response.set_cookie('codice_messaggio', '200')
+        return response
+    
+    return HttpResponse(status=405)
+
+@csrf_exempt
+def update_athlete(request):  #da fare
     if request.method == 'POST':
         athlete_id = request.POST.get('athlete_id')
         athlete_view = AthleteView()
@@ -53,6 +67,7 @@ def delete_athlete(request):
  #   hosts_data = host_view.get_all_hosts(request).content  # Chiamata alla funzione get_all_athletes
  #   hosts = json.loads(hosts_data)  # Decodifica del JSON
  #   return render(request, 'features/athlete.html', {'hosts': hosts})
+
 def host(request):
     host_view = HostView()
     host_data = host_view.get_all_hosts(request).content  # Chiamata alla funzione get_all_hosts
@@ -91,4 +106,3 @@ def charts(request):
 
 def tables(request):
     return render(request, 'utils/tables.html')
-

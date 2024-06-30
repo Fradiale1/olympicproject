@@ -7,6 +7,9 @@
 {% endblock %}
 
 {% block content %}
+<div class="d-flex justify-content-end w-100 px-2 pt-2 mb-3">
+    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createModal" onclick="openCreateModal()">Aggiungi</button>
+</div>
 <div class="card mb-4">
     <div class="card-header">
         <i class="fas fa-table me-1"></i>
@@ -52,6 +55,99 @@
         </table>
     </div>
 </div>
+
+<div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="createModalLabel">Creazione Atleta</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form id="createForm" method="post" action="{% url 'create_athlete' %}">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="FullnameCreate" class="form-label">Nome e Cognome</label>
+                    <input class="form-control" id="FullnameCreate" type="text" placeholder="Nome e Cognome" aria-label="default input example">
+                </div>
+                <div class="mb-3">
+                    <label for="NPartCreate" class="form-label">Numero di Partecipazioni</label>
+                    <input class="form-control" id="NPartCreate" type="number" placeholder="Numero di Partecipazioni" aria-label="default input example">
+                </div>
+                <div class="mb-3">
+                    <label for="FirstGameCreate" class="form-label">Prima Apparizione</label>
+                    <select class="form-select" aria-label="Default select example" id="FirstGameCreate">
+                        <option selected> Scegli la manifestazione</option>
+                        {% for host in hosts %}
+                        <option value="{{ host.game_name }}"> {{ host.game_name }}</option>
+                        {% endfor %}
+                    </select>
+
+                </div>
+                <div class="mb-3">
+                    <label for="YearBirthCreate" class="form-label">Anno di Nascita</label>
+                    <input class="form-control" id="YearBirthCreate" type="number" min="1900" max="2099" placeholder="Anno di Nascita" aria-label="default input example">
+                </div>
+                <div class="mb-3">
+                    <label for="MedalsCreate" class="form-label">Medaglie</label>
+                    <input class="form-control" id="MedalsCreate" type="text" placeholder="Medaglie" aria-label="default input example">
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+          <button type="submit" class="btn btn-danger">Aggiungi</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="updateModalLabel">Modifica Atleta</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form id="updateForm" method="post" action="{% url 'update_athlete' %}">
+                {% csrf_token %}
+                <input type="hidden" name="athlete_id_update" id="athleteIdInputUpdate">
+                <div class="mb-3">
+                    <label for="FullnameUpdate" class="form-label">Nome e Cognome</label>
+                    <input class="form-control" id="FullnameUpdate" type="text" placeholder="Nome e Cognome" aria-label="default input example">
+                </div>
+                <div class="mb-3">
+                    <label for="NPartUpdate" class="form-label">Numero di Partecipazioni</label>
+                    <input class="form-control" id="NPartUpdate" type="number" placeholder="Numero di Partecipazioni" aria-label="default input example">
+                </div>
+                <div class="mb-3">
+                    <label for="FirstGameUpdate" class="form-label">Prima Apparizione</label>
+                    <select class="form-select" aria-label="Default select example" id="FirstGameUpdate">
+                        {% for host in hosts %}
+                        <option value="{{ host.game_name }}"> {{ host.game_name }}</option>
+                        {% endfor %}
+                    </select>
+
+                </div>
+                <div class="mb-3">
+                    <label for="YearBirthUpdate" class="form-label">Anno di Nascita</label>
+                    <input class="form-control" id="YearBirthUpdate" type="number" min="1900" max="2099" placeholder="Anno di Nascita" aria-label="default input example">
+                </div>
+                <div class="mb-3">
+                    <label for="MedalsUpdate" class="form-label">Medaglie</label>
+                    <input class="form-control" id="MedalsUpdate" type="text" placeholder="Medaglie" aria-label="default input example">
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+          <button type="submit" class="btn btn-danger">Modifica</button>
+        </div>
+      </div>
+    </div>
+</div>
+
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -73,44 +169,5 @@
         </div>
     </div>
 </div>
-<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="updateModalLabel">Modifica Atleta</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            <form id="updateForm" method="post" action="{% url 'update_athlete' %}">
-                {% csrf_token %}
-                <input type="hidden" name="athlete_id_update" id="athleteIdInputUpdate">
-                <div class="mb-3">
-                    <label for="Fullname" class="form-label">Nome e Cognome</label>
-                    <input class="form-control" id="Fullname" type="text" placeholder="Nome e Cognome" aria-label="default input example">
-                </div>
-                <div class="mb-3">
-                    <label for="NPart" class="form-label">Numero di Partecipazioni</label>
-                    <input class="form-control" id="NPart" type="number" placeholder="Numero di Partecipazioni" aria-label="default input example">
-                </div>
-                <div class="mb-3">
-                    <label for="FirstGame" class="form-label">Prima Apparizione</label>
-                    <input class="form-control" id="FirstGame" placeholder="Prima Apparizione" aria-label="default input example">
-                </div>
-                <div class="mb-3">
-                    <label for="YearBirth" class="form-label">Anno di Nascita</label>
-                    <input class="form-control" id="YearBirth" type="number" placeholder="Anno di Nascita" aria-label="default input example">
-                </div>
-                <div class="mb-3">
-                    <label for="Medals" class="form-label">Medaglie</label>
-                    <input class="form-control" id="Medals" type="text" placeholder="Medaglie" aria-label="default input example">
-                </div>
-            </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
-          <button onclick="updateAthlete(athlete.id)" class="btn btn-primary">Modifica</button>
-        </div>
-      </div>
-    </div>
-</div>
+
 {% endblock %}
