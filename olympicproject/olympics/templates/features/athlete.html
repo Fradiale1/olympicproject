@@ -68,15 +68,15 @@
                 {% csrf_token %}
                 <div class="mb-3">
                     <label for="FullnameCreate" class="form-label">Nome e Cognome</label>
-                    <input class="form-control" id="FullnameCreate" type="text" placeholder="Nome e Cognome" aria-label="default input example">
+                    <input class="form-control" id="FullnameCreate" type="text" name="athlete_full_name_create" placeholder="Nome e Cognome" aria-label="default input example">
                 </div>
                 <div class="mb-3">
                     <label for="NPartCreate" class="form-label">Numero di Partecipazioni</label>
-                    <input class="form-control" id="NPartCreate" type="number" placeholder="Numero di Partecipazioni" aria-label="default input example">
+                    <input class="form-control" id="NPartCreate" type="number" name="games_participations_create" placeholder="Numero di Partecipazioni" aria-label="default input example">
                 </div>
                 <div class="mb-3">
                     <label for="FirstGameCreate" class="form-label">Prima Apparizione</label>
-                    <select class="form-select" aria-label="Default select example" id="FirstGameCreate">
+                    <select class="form-select" aria-label="Default select example" id="FirstGameCreate" name="first_game_create">
                         <option selected> Scegli la manifestazione</option>
                         {% for host in hosts %}
                         <option value="{{ host.game_name }}"> {{ host.game_name }}</option>
@@ -86,11 +86,11 @@
                 </div>
                 <div class="mb-3">
                     <label for="YearBirthCreate" class="form-label">Anno di Nascita</label>
-                    <input class="form-control" id="YearBirthCreate" type="number" min="1900" max="2099" placeholder="Anno di Nascita" aria-label="default input example">
+                    <input class="form-control" id="YearBirthCreate" type="number" min="1900" max="2099" name="athlete_year_birth_create" placeholder="Anno di Nascita" aria-label="default input example">
                 </div>
                 <div class="mb-3">
                     <label for="MedalsCreate" class="form-label">Medaglie</label>
-                    <input class="form-control" id="MedalsCreate" type="text" placeholder="Medaglie" aria-label="default input example">
+                    <input class="form-control" id="MedalsCreate" type="text" placeholder="Medaglie" name="athlete_medals_create" aria-label="default input example">
                 </div>
             </form>
         </div>
@@ -115,15 +115,15 @@
                 <input type="hidden" name="athlete_id_update" id="athleteIdInputUpdate">
                 <div class="mb-3">
                     <label for="FullnameUpdate" class="form-label">Nome e Cognome</label>
-                    <input class="form-control" id="FullnameUpdate" type="text" placeholder="Nome e Cognome" aria-label="default input example">
+                    <input class="form-control" id="FullnameUpdate" type="text" name="athlete_full_name_update" placeholder="Nome e Cognome" aria-label="default input example">
                 </div>
                 <div class="mb-3">
                     <label for="NPartUpdate" class="form-label">Numero di Partecipazioni</label>
-                    <input class="form-control" id="NPartUpdate" type="number" placeholder="Numero di Partecipazioni" aria-label="default input example">
+                    <input class="form-control" id="NPartUpdate" type="number" name="games_participations_update" placeholder="Numero di Partecipazioni" aria-label="default input example">
                 </div>
                 <div class="mb-3">
                     <label for="FirstGameUpdate" class="form-label">Prima Apparizione</label>
-                    <select class="form-select" aria-label="Default select example" id="FirstGameUpdate">
+                    <select class="form-select" aria-label="Default select example" id="FirstGameUpdate" name="first_game_update">
                         {% for host in hosts %}
                         <option value="{{ host.game_name }}"> {{ host.game_name }}</option>
                         {% endfor %}
@@ -132,11 +132,11 @@
                 </div>
                 <div class="mb-3">
                     <label for="YearBirthUpdate" class="form-label">Anno di Nascita</label>
-                    <input class="form-control" id="YearBirthUpdate" type="number" min="1900" max="2099" placeholder="Anno di Nascita" aria-label="default input example">
+                    <input class="form-control" id="YearBirthUpdate" type="number" min="1900" max="2099" name="athlete_year_birth_update" placeholder="Anno di Nascita" aria-label="default input example">
                 </div>
                 <div class="mb-3">
                     <label for="MedalsUpdate" class="form-label">Medaglie</label>
-                    <input class="form-control" id="MedalsUpdate" type="text" placeholder="Medaglie" aria-label="default input example">
+                    <input class="form-control" id="MedalsUpdate" type="text" placeholder="Medaglie" name="athlete_medals_update" aria-label="default input example">
                 </div>
             </form>
         </div>

@@ -20,8 +20,17 @@ def athlete(request):
 @csrf_exempt
 def create_athlete(request): #da fare
     if request.method == 'POST':
-        athlete_id = request.POST.get('athlete_id')
+        data = {
+            'athlete_url': request.POST.get('athlete_url_create',''),
+            'athlete_full_name': request.POST.get('athlete_full_name_create',''),
+            'games_participations': request.POST.get('games_participations_create',''),
+            'first_game': request.POST.get('first_game_create',''),
+            'athlete_year_birth': request.POST.get('athlete_year_birth_create',''),
+            'athlete_medals': request.POST.get('athlete_medals_create',''),
+            'bio': request.POST.get('bio_create',''),
+        }
         athlete_view = AthleteView()
+        athlete_view.create_athlete(data).content
 
         url = reverse('atleti')
         response = HttpResponseRedirect(url)
@@ -34,8 +43,19 @@ def create_athlete(request): #da fare
 @csrf_exempt
 def update_athlete(request):  #da fare
     if request.method == 'POST':
-        athlete_id = request.POST.get('athlete_id')
+        data = {
+            '_id': request.POST.get('athlete_id_update',''),
+            'athlete_url': request.POST.get('athlete_url_update',''),
+            'athlete_full_name': request.POST.get('athlete_full_name_update',''),
+            'games_participations': request.POST.get('games_participations_update',''),
+            'first_game': request.POST.get('first_game_update',''),
+            'athlete_year_birth': request.POST.get('athlete_year_birth_update',''),
+            'athlete_medals': request.POST.get('athlete_medals_update',''),
+            'bio': request.POST.get('bio_update',''),
+        }
+
         athlete_view = AthleteView()
+        athlete_view.update_athlete(data).content
 
         url = reverse('atleti')
         response = HttpResponseRedirect(url)
@@ -50,7 +70,8 @@ def delete_athlete(request):
     if request.method == 'POST':
         athlete_id = request.POST.get('athlete_id_delete')
         athlete_view = AthleteView()
-        delete_athlete_message = athlete_view.delete_athlete(request, athlete_id).content
+        #delete_athlete_message = 
+        athlete_view.delete_athlete(request, athlete_id).content
 
         # Esegui il reindirizzamento alla vista di destinazione
         #return redirect('atleti')
