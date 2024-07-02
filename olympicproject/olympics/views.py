@@ -42,6 +42,7 @@ def create_athlete(request): #da fare
 
 @csrf_exempt
 def update_athlete(request):  #da fare
+    print("provaprova")
     if request.method == 'POST':
         data = {
             '_id': request.POST.get('athlete_id_update',''),
@@ -56,7 +57,7 @@ def update_athlete(request):  #da fare
 
         athlete_view = AthleteView()
         athlete_view.update_athlete(data).content
-
+     
         url = reverse('atleti')
         response = HttpResponseRedirect(url)
         response.set_cookie('messaggio', 'Atleta aggiornato')
