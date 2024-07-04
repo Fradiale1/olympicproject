@@ -73,10 +73,10 @@ class HostView(View):
         })
 
     @request_mapping("/update/<str:host_id>", method="post")
-    def update_host(self, request, host_id):
-        data = request.POST
+    def update_host(self, requestData):
+        data = requestData
         host = self.host_repository.update_host(
-            host_id, 
+            data.get('_id'),
             data.get('game_slug'),
             data.get('game_end_date'),
             data.get('game_start_date'),

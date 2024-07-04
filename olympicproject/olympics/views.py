@@ -34,7 +34,8 @@ def search_athlete(request):
 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-
+   
+    
     return render(request, 'features/athlete.html', {'page_obj': page_obj, 'hosts': hosts}) #'athletes': athletes,
     
 
