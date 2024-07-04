@@ -20,6 +20,26 @@ class AthleteRepository:
         except Exception as e:
             print(f"Errore nel recuperare l'atleta con ID {athlete_id}: {e}")
             return None
+        
+    def search_athletes(self, search_query):
+        try:
+            # Utilizziamo il regex per cercare la stringa parziale in tutti i campi
+            query = {
+                '$or': [
+                    {'athlete_url': {'$regex': search_query, '$options': 'i'}},
+                    {'athlete_full_name': {'$regex': search_query, '$options': 'i'}},
+                    {'games_participations': {'$regex': search_query, '$options': 'i'}},
+                    {'first_game': {'$regex': search_query, '$options': 'i'}},
+                    {'athlete_year_birth': {'$regex': search_query, '$options': 'i'}},
+                    {'athlete_medals': {'$regex': search_query, '$options': 'i'}},
+                    {'bio': {'$regex': search_query, '$options': 'i'}}
+                ]
+            }
+            results = list(self.athletes_collection.find(query).limit(200))
+            return results
+        except Exception as e:
+            print(f"Errore nella ricerca degli atleti per '{search_query}': {e}")
+            return []
 
     def create_athlete(self, athlete_url, athlete_full_name, games_participations, first_game, athlete_year_birth, athlete_medals, bio):
         athlete = {

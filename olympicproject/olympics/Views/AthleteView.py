@@ -38,6 +38,31 @@ class AthleteView(View):
             data.append(athlete_data)
 
         return JsonResponse(data, safe=False)
+    
+    @request_mapping("/search/<str:string>", method="get")
+    def search_athletes(self, request, string):
+        athletes = self.athlete_repository.search_athletes(string)
+        #year = int(datetime.date.today().strftime("%Y"))
+        
+        data = []
+        for athlete in athletes:
+            #athlet_age = athlete.get('athlete_year_birth', '')
+            #if(athlet_age != ''):
+            #    athlet_age = int(year) - athlet_age
+
+            athlete_data = {
+                'id': str(athlete['_id']),  # Converti ObjectId in stringa per JSON
+                'athlete_url': athlete.get('athlete_url',''),
+                'athlete_full_name': athlete.get('athlete_full_name', ''),
+                'games_participations': athlete.get('games_participations',''),
+                'first_game': athlete.get('first_game',''),
+                'athlete_year_birth': athlete.get('athlete_year_birth',''),
+                'athlete_medals': athlete.get('athlete_medals',''),
+                'bio': athlete.get('bio','')
+            }
+            data.append(athlete_data)
+
+        return JsonResponse(data, safe=False)
 
     @request_mapping("/getById/<str:athlete_id>", method="get") #@get("/{athlete_id}")
     def get_athlete_by_id(self, request, athlete_id):
