@@ -58,8 +58,8 @@ class MedalView(View):
         return JsonResponse(data)
 
     @request_mapping("/create", method="post")
-    def create_medal(self, request):
-        data = request.POST
+    def create_medal(self, requestData):
+        data = requestData
         medal = self.medal_repository.create_medal(
             data.get('discipline_title'),
             data.get('slug_game'),
@@ -75,7 +75,7 @@ class MedalView(View):
             data.get('country_3_letter_code')
         )
         return JsonResponse({
-            'id': str(medal['_id']), 
+            'id': str(medal['_id']),
             'discipline_title': medal.get('discipline_title',''),
             'slug_game': medal.get('slug_game',''),
             'event_title': medal.get('event_title',''),
@@ -91,10 +91,10 @@ class MedalView(View):
         })
 
     @request_mapping("/update/<str:medal_id>", method="post")
-    def update_medal(self, request, medal_id):
-        data = request.POST
+    def update_medal(self, requestData):
+        data = requestData
         medal = self.medal_repository.update_medal(
-            medal_id,
+            data.get('_id'),
             data.get('discipline_title'),
             data.get('slug_game'),
             data.get('event_title'),
@@ -109,19 +109,19 @@ class MedalView(View):
             data.get('country_3_letter_code')
         )
         return JsonResponse({
-            'id': str(medal['_id']), 
-            'discipline_title': medal.get('discipline_title',''),
-            'slug_game': medal.get('slug_game',''),
-            'event_title': medal.get('event_title',''),
-            'event_gender': medal.get('event_gender',''),
-            'medal_type': medal.get('medal_type',''),
-            'participant_type': medal.get('participant_type',''),
-            'participant_title': medal.get('participant_title',''),
-            'athlete_url': medal.get('athlete_url',''),
-            'athlete_full_name': medal.get('athlete_full_name',''),
-            'country_name': medal.get('country_name',''),
-            'country_code': medal.get('country_code',''),
-            'country_3_letter_code': medal.get('country_3_letter_code','')
+            "id": str(medal['_id']), 
+            "discipline_title": medal.get('discipline_title',''),
+            "slug_game": medal.get('slug_game',''),
+            "event_title": medal.get('event_title',''),
+            "event_gender": medal.get('event_gender',''),
+            "medal_type": medal.get('medal_type',''),
+            "participant_type": medal.get('participant_type',''),
+            "participant_title": medal.get('participant_title',''),
+            "athlete_url": medal.get('athlete_url',''),
+            "athlete_full_name": medal.get('athlete_full_name',''),
+            "country_name": medal.get('country_name',''),
+            "country_code": medal.get('country_code',''),
+            "country_3_letter_code": medal.get('country_3_letter_code','')
         })
 
     @request_mapping("/delete/<str:medal_id>", method="get")

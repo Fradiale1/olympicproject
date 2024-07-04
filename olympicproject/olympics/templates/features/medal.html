@@ -1,0 +1,241 @@
+{% extends 'index.html' %}
+
+{% load static %}
+
+{% block head %}
+<script type="text/javascript" src="{% static 'js/features/medal.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-end w-100 px-2 pt-2 mb-3">
+    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createModal" onclick="openCreateModal()">Aggiungi</button>
+</div>
+<div class="card mb-4">
+    <div class="card-header">
+        <i class="fas fa-table me-1"></i>
+        Tabella delle Medaglie
+    </div>
+    <div class="card-body">
+        <table id="datatablesSimple">
+            <thead>
+                <tr>
+                    <th>Discipline</th>
+                    <th>Slug Game</th>
+                    <th>Event Title</th>
+                    <th>Event Gender</th>
+                    <th>Medal Type</th>
+                    <th>Participant Type</th>
+                    <th>Participant Title</th>
+                    <th>Athlete Name</th>
+                    <th>Country Name</th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <th>Discipline</th>
+                    <th>Slug Game</th>
+                    <th>Event Title</th>
+                    <th>Event Gender</th>
+                    <th>Medal Type</th>
+                    <th>Participant Type</th>
+                    <th>Participant Title</th>
+                    <th>Athlete Name</th>
+                    <th>Country Name</th>
+                </tr>
+            </tfoot>
+            <tbody>
+                {% for medal in medals %}
+                <tr>
+                    <td>{{ medal.discipline_title }}</td>
+                    <td>{{ medal.slug_game }}</td>
+                    <td>{{ medal.event_title }}</td>
+                    <td>{{ medal.event_gender }}</td>
+                    <td>{{ medal.medal_type }}</td>
+                    <td>{{ medal.participant_type }}</td>
+                    <td>{{ medal.participant_title }}</td>
+                    <td>{{ medal.athlete_full_name }}</td>
+                    <td>{{ medal.country_name }}</td>
+                    <td>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal" onclick="openUpdateModal('{{ medal.id }}')">Modifica</button>
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="openDeleteModal('{{ medal.id }}')">Cancella</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <form id="createForm" method="post" action="{% url 'create_medal' %}">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="createModalLabel">Creazione Medaglia</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">  
+                    <div class="mb-3">
+                        <label for="DisciplineTitleCreate" class="form-label">Nome Disciplina</label>
+                        <input class="form-control" id="DisciplineTitleCreate" type="text" name="discipline_title_create" placeholder="Nome Disciplina" aria-label="default input example">
+                    </div>
+                    <div class="mb-3">
+                        <label for="SlugGameCreate" class="form-label">Manifestazione</label>
+                        <select class="form-select" aria-label="Default select example" id="SlugGameCreate" name="slug_game_create">
+                            <option selected> Scegli la manifestazione</option>
+                            {% for host in hosts %}
+                            <option value="{{ host.game_slug }}"> {{ host.game_slug }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="EventTitleCreate" class="form-label">Nome Evento</label>
+                        <input class="form-control" id="EventTitleCreate" type="text" name="event_title_create" placeholder="Nome Evento" aria-label="default input example">
+                    </div>
+                    <div class="mb-3">
+                        <label for="EventGenderCreate" class="form-label">Categoria Evento</label>
+                        <select class="form-select" id="EventGenderCreate" name="event_gender_create" aria-label="Default select example">
+                            <option selected> Scegli la manifestazione</option>
+                            <option value="Mixed">Mixed</option>
+                            <option value="Women">Women</option>
+                            <option value="Men">Men</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="MedalTypeCreate" class="form-label">Tipo Medaglia</label>
+                        <select class="form-select" id="MedalTypeCreate" name="medal_type_create" aria-label="Default select example">
+                            <option selected> Scegli la medaglia</option>
+                            <option value="GOLD">GOLD</option>
+                            <option value="SILVER">SILVER</option>
+                            <option value="BRONZE">BRONZE</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="ParticipantTypeCreate" class="form-label">Tipo Partecipante</label>
+                        <select class="form-select" id="ParticipantTypeCreate" name="participant_type_create" aria-label="Default select example">
+                            <option selected> Scegli il tipo</option>
+                            <option value="GameTeam">GameTeam</option>
+                            <option value="Athlete">Athlete</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="ParticipantTitleCreate" class="form-label">Nome Partecipante</label>
+                        <input class="form-control" id="ParticipantTitleCreate" type="text" name="participant_title_create" placeholder="Nome Partecipante" aria-label="default input example">
+                    </div>
+                    <div class="mb-3">
+                        <label for="AthleteNameCreate" class="form-label">Nome Atleta</label>
+                        <input class="form-control" id="AthleteNameCreate" type="text" name="athlete_full_name_create" placeholder="Nome Atleta" aria-label="default input example">
+                    </div>
+                    <div class="mb-3">
+                        <label for="CountryNameCreate" class="form-label">Nome Nazione</label>
+                        <input class="form-control" id="CountryNameCreate" type="text" name="country_name_create" placeholder="Nome Nazione" aria-label="default input example">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+                    <button type="submit" class="btn btn-success">Aggiungi</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form id="updateForm" method="post" action="{% url 'update_medal' %}">
+            {% csrf_token %} 
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="updateModalLabel">Modifica Medaglia</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">  
+                    <input type="hidden" name="medal_id_update" id="medalIdInputUpdate">
+                    <div class="mb-3">
+                        <label for="DisciplineTitleUpdate" class="form-label">Nome Disciplina</label>
+                        <input class="form-control" id="DisciplineTitleUpdate" type="text" name="discipline_title_update" placeholder="Nome Disciplina" aria-label="default input example">
+                    </div>
+                    <div class="mb-3">
+                        <label for="SlugGameUpdate" class="form-label">Manifestazione</label>
+                        <select class="form-select" aria-label="Default select example" id="SlugGameUpdate" name="slug_game_update">
+                            {% for host in hosts %}
+                            <option value="{{ host.game_slug }}"> {{ host.game_slug }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="EventTitleUpdate" class="form-label">Nome Evento</label>
+                        <input class="form-control" id="EventTitleUpdate" type="text" name="event_title_update" placeholder="Nome Evento" aria-label="default input example">
+                    </div>
+                    <div class="mb-3">
+                        <label for="EventGenderUpdate" class="form-label">Categoria Evento</label>
+                        <select class="form-select" id="EventGenderUpdate" name="event_gender_update" aria-label="Default select example">
+                            <option selected> Scegli la manifestazione</option>
+                            <option value="Mixed">Mixed</option>
+                            <option value="Women">Women</option>
+                            <option value="Men">Men</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="MedalTypeUpdate" class="form-label">Tipo Medaglia</label>
+                        <select class="form-select" id="MedalTypeUpdate" name="medal_type_update" aria-label="Default select example">
+                            <option selected> Scegli la medaglia</option>
+                            <option value="GOLD">GOLD</option>
+                            <option value="SILVER">SILVER</option>
+                            <option value="BRONZE">BRONZE</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="ParticipantTypeUpdate" class="form-label">Tipo Partecipante</label>
+                        <select class="form-select" id="ParticipantTypeUpdate" name="participant_type_update" aria-label="Default select example">
+                            <option selected> Scegli il tipo</option>
+                            <option value="GameTeam">GameTeam</option>
+                            <option value="Athlete">Athlete</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="ParticipantTitleUpdate" class="form-label">Nome Partecipante</label>
+                        <input class="form-control" id="ParticipantTitleUpdate" type="text" name="participant_title_update" placeholder="Nome Partecipante" aria-label="default input example">
+                    </div>
+                    <div class="mb-3">
+                        <label for="AthleteNameUpdate" class="form-label">Nome Atleta</label>
+                        <input class="form-control" id="AthleteNameUpdate" type="text" name="athlete_full_name_update" placeholder="Nome Atleta" aria-label="default input example">
+                    </div>
+                    <div class="mb-3">
+                        <label for="CountryNameUpdate" class="form-label">Nome Nazione</label>
+                        <input class="form-control" id="CountryNameUpdate" type="text" name="country_name_update" placeholder="Nome Nazione" aria-label="default input example">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+                    <button type="submit" class="btn btn-success">Modifica</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form id="deleteForm" method="post" action="{% url 'delete_medal' %}">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="deleteModalLabel">Conferma Eliminazione</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Sei sicuro di voler eliminare questo atleta?
+                    <input type="hidden" name="medal_id_delete" id="medalIdInputDelete">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+                    <button type="submit" class="btn btn-danger">Confermo</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

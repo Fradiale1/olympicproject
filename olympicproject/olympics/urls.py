@@ -28,6 +28,11 @@ urlpatterns = [
     #host
     path('host', views.host, name='host'),
 
+    #medaglie
+    path('medaglie', views.medal, name='medaglie'),
+    path('create_medal/', views.create_medal, name='create_medal'),
+    path('update_medal/', views.update_medal, name='update_medal'),
+    path('delete_medal/', views.delete_medal, name='delete_medal'),
 
 
 

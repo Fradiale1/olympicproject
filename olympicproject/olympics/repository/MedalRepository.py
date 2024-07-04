@@ -9,7 +9,7 @@ class MedalRepository:
 
     def get_all_medals(self):
         try:
-            return list(self.medals_collection.find())
+            return list(self.medals_collection.find().limit(200))
         except Exception as e:
             print(f"Errore nel recuperare tutte le medaglie: {e}")
             return []
