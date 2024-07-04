@@ -50,8 +50,8 @@ class HostView(View):
         return JsonResponse(data)
 
     @request_mapping("/create", method="post")
-    def create_host(self, request):
-        data = request.POST
+    def create_host(self, requestData):
+        data = requestData
         host = self.host_repository.create_host(
             data.get('game_slug'),
             data.get('game_end_date'),

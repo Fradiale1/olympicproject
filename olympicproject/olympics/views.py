@@ -7,16 +7,14 @@ from olympics.Views.MedalView import MedalView
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 import json
 
-# Create your views here.
+# Creazione view Index
 def index(request):
     return render(request, 'index.html')
 
+# Creazione view Athele
 def athlete(request):
-
     athletes = json.loads(AthleteView().get_all_athletes(request).content)  # Decodifica del JSON
-    hosts = json.loads(HostView().get_all_hosts(request).content)
-
-    return render(request, 'features/athlete.html', {'athletes': athletes, 'hosts': hosts})
+    return render(request, 'features/athlete.html', {'athletes': athletes })
 
 @csrf_exempt
 def create_athlete(request): 
@@ -84,17 +82,80 @@ def delete_athlete(request):
     
     return HttpResponse(status=405)
 
- #def host(request):
- #   host_view = HostView()
- #   hosts_data = host_view.get_all_hosts(request).content  # Chiamata alla funzione get_all_athletes
- #   hosts = json.loads(hosts_data)  # Decodifica del JSON
- #   return render(request, 'features/athlete.html', {'hosts': hosts})
 
+# Creazione view Host
 def host(request):
-    host_view = HostView()
-    host_data = host_view.get_all_hosts(request).content  # Chiamata alla funzione get_all_hosts
-    hosts = json.loads(host_data)  # Decodifica del JSON
-    return render(request, 'features/host.html', {'hosts': hosts})
+    hosts = json.loads(HostView().get_all_hosts(request).content)
+    return render(request, 'features/host.html', {'hosts': hosts })
+
+
+@csrf_exempt
+def create_host(request): 
+    if request.method == 'POST':
+        data = {
+            'game_slug': request.POST.get('slug_create',''),
+            'game_end_date': request.POST.get('end_date_create',''),
+            'game_start_date': request.POST.get('begin_date_create',''),
+            'game_location': request.POST.get('location_create',''),
+            'game_name': request.POST.get('game_name_create',''),
+            'game_season': request.POST.get('season_create',''),
+            'game_year': request.POST.get('game_year_create',''),
+        }
+        host_view = HostView()
+        host_view.create_host(data).content
+
+        url = reverse('host')
+        response = HttpResponseRedirect(url)
+        response.set_cookie('messaggio', 'host aggiornato')
+        response.set_cookie('codice_messaggio', '200')
+        return response
+    
+    return HttpResponse(status=405)
+
+@csrf_exempt
+def update_host(request):  
+    if request.method == 'POST':
+        data = {
+            '_id': request.POST.get('host_id_update',''),
+            'game_slug': request.POST.get('slug_update',''),
+            'game_end_date': request.POST.get('end_date_update',''),
+            'game_start_date': request.POST.get('begin_date_update',''),
+            'game_location': request.POST.get('location_update',''),
+            'game_name': request.POST.get('game_name_update',''),
+            'game_season': request.POST.get('season_update',''),
+            'game_year': request.POST.get('game_year_update',''),
+        }
+
+        host_view = HostView()
+        host_view.update_host(data).content
+     
+        url = reverse('host')
+        response = HttpResponseRedirect(url)
+        response.set_cookie('messaggio', 'Host aggiornato')
+        response.set_cookie('codice_messaggio', '200')
+        return response
+    
+    return HttpResponse(status=405)
+
+@csrf_exempt
+def delete_host(request):
+    if request.method == 'POST':
+        host_id = request.POST.get('host_id_delete')
+        host_view = HostView()
+        #delete_athlete_message = 
+        host_view.delete_host(request, host_id).content
+
+        # Esegui il reindirizzamento alla vista di destinazione
+        #return redirect('atleti')
+        url = reverse('host')
+        response = HttpResponseRedirect(url)
+        response.set_cookie('messaggio', 'Host Eliminato')
+        response.set_cookie('codice_messaggio', '200')
+        return response
+    
+    return HttpResponse(status=405)
+
+
 
 
 def medal(request):

@@ -2,8 +2,14 @@
 
 {% load static %}
 
+{% block head %}
+<script type="text/javascript" src="{% static 'js/features/host.js' %}"></script>
+{% endblock %}
 
 {% block content %}
+<div class="d-flex justify-content-end w-100 px-2 pt-2 mb-3">
+    <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createModal" onclick="openCreateModal()">Aggiungi</button>
+</div>
 <div class="card mb-4">
     <div class="card-header">
         <i class="fas fa-table me-1"></i>
@@ -20,6 +26,7 @@
                     <th>Nome gara</th>
                     <th>Stagione</th>
                     <th>Anno</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tfoot>
@@ -31,6 +38,7 @@
                     <th>Nome gara</th>
                     <th>Stagione</th>
                     <th>Anno</th>
+                    <th>Actions</th>
                 </tr>
             </tfoot>
             <tbody>
@@ -43,10 +51,138 @@
                     <td>{{ host.game_name }}</td>
                     <td>{{ host.game_season }}</td>
                     <td>{{ host.game_year }}</td>
+                    <td>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal" onclick="openUpdateModal('{{ host.id }}')">Modifica</button>
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="openDeleteModal('{{ host.id }}')">Cancella</button>
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
+    </div>
+</div>
+
+
+<div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form id="createForm" method="post" action="{% url 'create_host' %}">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="createModalLabel">Creazione Host</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">  
+                    <div class="mb-3">
+                        <label for="SlugCreate" class="form-label">Titolo</label>
+                        <input class="form-control" id="SlugCreate" type="text" name="slug_create" placeholder="(Nome-Anno)" aria-label="default input example">
+                    </div>
+                    <div class="mb-3">
+                        <label for="EndDateCreate" class="form-label">Data di Fine</label>
+                        <input class="form-control" id="EndDateCreate" type="datetime" name="end_date_create" placeholder="Data di Fine" aria-label="default input example">
+                    </div>
+                    <div class="mb-3">
+                        <label for="BeginDateCreate" class="form-label">Data di Inizio</label>
+                        <input class="form-control" id="BeginDateCreate" type="datetime" name="begin_date_create" placeholder="Data di Inizio" aria-label="default input example">
+                    </div>
+                    <div class="mb-3">
+                        <label for="LocationCreate" class="form-label">Paese</label>
+                        <input class="form-control" id="LocationCreate" type="text" placeholder="Paese" name="location_create" aria-label="default input example">
+                    </div>
+                    <div class="mb-3">
+                        <label for="GameNameCreate" class="form-label">Nome Gara</label>
+                        <input class="form-control" id="GameNameCreate" type="text" placeholder="(Nome e Anno)" name="game_name_create" aria-label="default input example">
+                    </div>
+                    <div class="mb-3">
+                        <label for="SeasonCreate" class="form-label">Stagione</label>
+                        <input class="form-control" id="SeasonCreate" type="text" placeholder="Stagione" name="season_create" aria-label="default input example">
+                    </div>
+                    <div class="mb-3">
+                        <label for="GameYearCreate" class="form-label">Anno</label>
+                        <input class="form-control" id="GameYearCreate" type="number" min="1900" max="2099" name="game_year_create" placeholder="Anno Gara" aria-label="default input example">
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+                    <button type="submit" class="btn btn-success">Aggiungi</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form id="updateForm" method="post" action="{% url 'update_host' %}">
+            {% csrf_token %} 
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="updateModalLabel">Modifica Host</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="host_id_update" id="hostIdInputUpdate">
+                    <div class="mb-3">
+                        <label for="SlugUpdate" class="form-label">Titolo</label>
+                        <input class="form-control" id="SlugUpdate" type="text" name="slug_update" placeholder="(Nome-Anno)" aria-label="default input example">
+                    </div>
+                    <div class="mb-3">
+                        <label for="EndDateUpdate" class="form-label">Data di Fine</label>
+                        <input class="form-control" id="EndDateUpdate" type="datetime" name="end_date_update" placeholder="Data di Fine" aria-label="default input example">
+                    </div>
+                    <div class="mb-3">
+                        <label for="BeginDateUpdate" class="form-label">Data di Inizio</label>
+                        <input class="form-control" id="BeginDateUpdate" type="datetime" name="begin_date_update" placeholder="Data di Inizio" aria-label="default input example">
+                    </div>
+                    <div class="mb-3">
+                        <label for="LocationUpdate" class="form-label">Paese</label>
+                        <input class="form-control" id="LocationUpdate" type="text" placeholder="Paese" name="location_update" aria-label="default input example">
+                    </div>
+                    <div class="mb-3">
+                        <label for="GameNameUpdate" class="form-label">Nome Gara</label>
+                        <input class="form-control" id="GameNameUpdate" type="text" placeholder="(Nome e Anno)" name="game_name_update" aria-label="default input example">
+                    </div>
+                    <div class="mb-3">
+                        <label for="SeasonUpdate" class="form-label">Stagione</label>
+                        <input class="form-control" id="SeasonUpdate" type="text" placeholder="Stagione" name="season_update" aria-label="default input example">
+                    </div>
+                    <div class="mb-3">
+                        <label for="GameYearUpdate" class="form-label">Anno</label>
+                        <input class="form-control" id="GameYearUpdate" type="number" min="1900" max="2099" name="game_year_update" placeholder="Anno Gara" aria-label="default input example">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+                    <button type="submit" class="btn btn-success">Modifica</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <form id="deleteForm" method="post" action="{% url 'delete_host' %}">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="deleteModalLabel">Conferma Eliminazione</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Sei sicuro di voler eliminare questo host?
+                    <input type="hidden" name="host_id_delete" id="hostIdInputDelete">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+                    <button type="submit" class="btn btn-danger">Confermo</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
