@@ -17,7 +17,7 @@ def athlete(request):
     athletes = json.loads(AthleteView().get_all_athletes(request).content)  # Decodifica del JSON
     hosts = json.loads(HostView().get_all_hosts(request).content)
 
-    paginator = Paginator(athletes, 10)  # 10 atleti per pagina
+    paginator = Paginator(athletes, 9)  # 10 atleti per pagina
 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -30,7 +30,7 @@ def search_athlete(request):
     athletes = json.loads(AthleteView().search_athletes(request, string_searchbar).content)  # Decodifica del JSON
     hosts = json.loads(HostView().get_all_hosts(request).content)
 
-    paginator = Paginator(athletes, 10)  # 10 atleti per pagina
+    paginator = Paginator(athletes, 9)  # 10 atleti per pagina
 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -109,7 +109,29 @@ def delete_athlete(request):
 # Creazione view Host
 def host(request):
     hosts = json.loads(HostView().get_all_hosts(request).content)
-    return render(request, 'features/host.html', {'hosts': hosts })
+    #return render(request, 'features/host.html', {'hosts': hosts })
+    paginator = Paginator(hosts, 9)  # 10 host per pagina
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'features/host.html', {'page_obj': page_obj}) #'hosts': hosts,
+
+
+def search_host(request):
+    string_searchbar = request.GET.get('string_searchbar')
+   # athletes = json.loads(AthleteView().search_athletes(request, string_searchbar).content)  # Decodifica del JSON
+    hosts = json.loads(HostView().search_hosts(request, string_searchbar).content)
+
+    paginator = Paginator(hosts, 9)  # 10 atleti per pagina
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+   
+    
+    return render(request, 'features/host.html', {'page_obj': page_obj}) #'athletes': athletes,
+
+@csrf_exempt
 
 
 @csrf_exempt
@@ -135,7 +157,7 @@ def create_host(request):
     
     return HttpResponse(status=405)
 
-@csrf_exempt
+
 def update_host(request):  
     if request.method == 'POST':
         data = {

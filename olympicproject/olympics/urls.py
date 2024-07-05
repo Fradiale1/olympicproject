@@ -28,6 +28,7 @@ urlpatterns = [
     
     #host
     path('host', views.host, name='host'),
+    path('search_host', views.search_host, name='search_host'),
     path('create_host/', views.create_host, name='create_host'),
     path('update_host/', views.update_host, name='update_host'),
     path('delete_host/', views.delete_host, name='delete_host'),
