@@ -1,6 +1,10 @@
 from pymongo import MongoClient, ReturnDocument
 from bson.objectid import ObjectId
 
+from datetime import datetime
+from dateutil import parser
+from bson import ObjectId
+
 class HostRepository:
     def __init__(self, db_url, db_name):
         self.client = MongoClient(db_url)
@@ -16,10 +20,27 @@ class HostRepository:
 
     def get_host_by_id(self, host_id):
         try:
-            return self.hosts_collection.find_one({'_id': ObjectId(host_id)})
+            host = self.hosts_collection.find_one({'_id': ObjectId(host_id)})
+            if host:
+                host['game_end_date'] = self.format_date(host.get('game_end_date'))
+                host['game_start_date'] = self.format_date(host.get('game_start_date'))
+            return host
         except Exception as e:
             print(f"Errore nel recuperare l'host con ID {host_id}: {e}")
             return None
+
+    @staticmethod
+    def format_date(date_str):
+        if date_str:
+            try:
+                date_obj = parser.isoparse(date_str) if isinstance(date_str, str) else date_str
+                return date_obj.date().isoformat()
+            except Exception as e:
+                print(f"Errore nella conversione della data: {e}")
+                return date_str
+        return date_str
+        
+        
 
     def search_hosts(self, search_query):
         try:
@@ -42,7 +63,10 @@ class HostRepository:
             return []
 
 
-    def create_host(self, game_slug, game_end_date, game_start_date, game_location, game_name, game_season, game_year):
+    def create_host(self, game_end_date, game_start_date, game_location, game_name, game_season, game_year):
+        # Ricava game_slug da game_name e rendilo tutto minuscolo
+        game_slug = '-'.join(game_name.split()).lower()
+
         host = {
             'game_slug': game_slug,
             'game_end_date': game_end_date,
@@ -60,10 +84,13 @@ class HostRepository:
             print(f"Errore nel creare l'host: {e}")
             return None
 
-    def update_host(self, host_id, game_slug=None, game_end_date=None, game_start_date=None, game_location=None, game_name=None, game_season=None, game_year=None):
+    def update_host(self, host_id, game_end_date=None, game_start_date=None, game_location=None, game_name=None, game_season=None, game_year=None):
         update_fields = {}
-        if game_slug:
+
+        if game_name:
+            game_slug = '-'.join(game_name.split()).lower()  # Ricava e rendi game_slug tutto minuscolo da game_name
             update_fields['game_slug'] = game_slug
+        
         if game_end_date:
             update_fields['game_end_date'] = game_end_date
         if game_start_date:
@@ -87,7 +114,6 @@ class HostRepository:
         except Exception as e:
             print(f"Errore nel aggiornare l'host con ID {host_id}: {e}")
             return None
-
     def delete_host(self, host_id):
         try:
             result = self.hosts_collection.delete_one({'_id': ObjectId(host_id)})

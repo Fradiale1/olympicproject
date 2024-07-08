@@ -138,7 +138,7 @@ def search_host(request):
 def create_host(request): 
     if request.method == 'POST':
         data = {
-            'game_slug': request.POST.get('slug_create',''),
+           # 'game_slug': request.POST.get('slug_create',''),
             'game_end_date': request.POST.get('end_date_create',''),
             'game_start_date': request.POST.get('begin_date_create',''),
             'game_location': request.POST.get('location_create',''),
@@ -157,12 +157,12 @@ def create_host(request):
     
     return HttpResponse(status=405)
 
-
+@csrf_exempt
 def update_host(request):  
     if request.method == 'POST':
         data = {
             '_id': request.POST.get('host_id_update',''),
-            'game_slug': request.POST.get('slug_update',''),
+          #  'game_slug': request.POST.get('slug_update',''),
             'game_end_date': request.POST.get('end_date_update',''),
             'game_start_date': request.POST.get('begin_date_update',''),
             'game_location': request.POST.get('location_update',''),

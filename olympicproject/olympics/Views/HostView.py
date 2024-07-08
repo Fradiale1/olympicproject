@@ -78,7 +78,7 @@ class HostView(View):
     def create_host(self, requestData):
         data = requestData
         host = self.host_repository.create_host(
-            data.get('game_slug'),
+           # data.get('game_slug'),
             data.get('game_end_date'),
             data.get('game_start_date'),
             data.get('game_location'),
@@ -88,7 +88,7 @@ class HostView(View):
         )
         return JsonResponse({
             "id": str(host['_id']),
-            'game_slug': host.get('game_slug',''),
+            #'game_slug': host.get('game_slug',''),
             'game_end_date': host.get('game_end_date',''),
             'game_start_date': host.get('game_start_date',''),
             'game_location': host.get('game_location',''),
@@ -102,7 +102,7 @@ class HostView(View):
         data = requestData
         host = self.host_repository.update_host(
             data.get('_id'),
-            data.get('game_slug'),
+           # data.get('game_slug'),
             data.get('game_end_date'),
             data.get('game_start_date'),
             data.get('game_location'),
@@ -112,7 +112,7 @@ class HostView(View):
         )
         return JsonResponse({
             "id": str(host['_id']), 
-            'game_slug': host.get('game_slug',''),
+          #  'game_slug': host.get('game_slug',''),
             'game_end_date': host.get('game_end_date',''),
             'game_start_date': host.get('game_start_date',''),
             'game_location': host.get('game_location',''),

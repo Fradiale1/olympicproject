@@ -11,7 +11,7 @@ function openCreateModal() {
 }
 
 function setCreateFieldModal(){
-    document.querySelector('#SlugCreate').value = '';
+   // document.querySelector('#SlugCreate').value = '';
     document.querySelector('#EndDateCreate').value = '';
     document.querySelector('#BeginDateCreate').value = "";
     document.querySelector('#LocationCreate').value = "";
@@ -49,8 +49,8 @@ function openUpdateModal(hostId) {
 
 function setUpdateFieldModal(data){
     document.querySelector('#SlugUpdate').value = data.game_slug;
-    document.querySelector('#EndDateUpdate').value = data.game_end_date;
     document.querySelector('#BeginDateUpdate').value = data.game_start_date;
+    document.querySelector('#EndDateUpdate').value = data.game_end_date;
     document.querySelector('#LocationUpdate').value = data.game_location;
     document.querySelector('#GameNameUpdate').value = data.game_name;
     document.querySelector('#SeasonUpdate').value = data.game_season;
