@@ -19,7 +19,7 @@ class Host(models.Model):
 
 class Athlete(models.Model):
     _id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    athlete_url = models.CharField(max_length=255)
+    #athlete_url = models.CharField(max_length=255)
     athlete_full_name = models.CharField(max_length=255)
     games_participations = models.IntegerField()
     first_game = models.CharField(max_length=100)

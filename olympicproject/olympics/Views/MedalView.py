@@ -27,12 +27,12 @@ class MedalView(View):
                 'medal_type': medal.get('medal_type',''),
                 'participant_type': medal.get('participant_type',''),
                 'participant_title': medal.get('participant_title',''),
-                'athlete_url': medal.get('athlete_url',''),
                 'athlete_full_name': medal.get('athlete_full_name',''),
                 'country_name': medal.get('country_name',''),
                 'country_code': medal.get('country_code',''),
                 'country_3_letter_code': medal.get('country_3_letter_code','')
             }
+                #'athlete_url': medal.get('athlete_url',''),
             data.append(medal_data)
         return JsonResponse(data, safe=False)
 
@@ -49,12 +49,12 @@ class MedalView(View):
                 'medal_type': medal.get('medal_type',''),
                 'participant_type': medal.get('participant_type',''),
                 'participant_title': medal.get('participant_title',''),
-                'athlete_url': medal.get('athlete_url',''),
                 'athlete_full_name': medal.get('athlete_full_name',''),
                 'country_name': medal.get('country_name',''),
                 'country_code': medal.get('country_code',''),
                 'country_3_letter_code': medal.get('country_3_letter_code','')
             }
+                #'athlete_url': medal.get('athlete_url',''),
         return JsonResponse(data)
 
     @request_mapping("/create", method="post")
@@ -68,12 +68,12 @@ class MedalView(View):
             data.get('medal_type'),
             data.get('participant_type'),
             data.get('participant_title'),
-            data.get('athlete_url'),
             data.get('athlete_full_name'),
             data.get('country_name'),
             data.get('country_code'),
             data.get('country_3_letter_code')
         )
+            #data.get('athlete_url'),
         return JsonResponse({
             'id': str(medal['_id']),
             'discipline_title': medal.get('discipline_title',''),
@@ -83,12 +83,12 @@ class MedalView(View):
             'medal_type': medal.get('medal_type',''),
             'participant_type': medal.get('participant_type',''),
             'participant_title': medal.get('participant_title',''),
-            'athlete_url': medal.get('athlete_url',''),
             'athlete_full_name': medal.get('athlete_full_name',''),
             'country_name': medal.get('country_name',''),
             'country_code': medal.get('country_code',''),
             'country_3_letter_code': medal.get('country_3_letter_code','')
         })
+            #'athlete_url': medal.get('athlete_url',''),
 
     @request_mapping("/update/<str:medal_id>", method="post")
     def update_medal(self, requestData):
@@ -102,12 +102,12 @@ class MedalView(View):
             data.get('medal_type'),
             data.get('participant_type'),
             data.get('participant_title'),
-            data.get('athlete_url'),
             data.get('athlete_full_name'),
             data.get('country_name'),
             data.get('country_code'),
             data.get('country_3_letter_code')
         )
+            #data.get('athlete_url'),
         return JsonResponse({
             "id": str(medal['_id']), 
             "discipline_title": medal.get('discipline_title',''),
@@ -117,12 +117,12 @@ class MedalView(View):
             "medal_type": medal.get('medal_type',''),
             "participant_type": medal.get('participant_type',''),
             "participant_title": medal.get('participant_title',''),
-            "athlete_url": medal.get('athlete_url',''),
             "athlete_full_name": medal.get('athlete_full_name',''),
             "country_name": medal.get('country_name',''),
             "country_code": medal.get('country_code',''),
             "country_3_letter_code": medal.get('country_3_letter_code','')
         })
+            #"athlete_url": medal.get('athlete_url',''),
 
     @request_mapping("/delete/<str:medal_id>", method="get")
     def delete_medal(self, request, medal_id):

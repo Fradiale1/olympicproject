@@ -9,7 +9,7 @@ class AthleteRepository:
 
     def get_all_athletes(self):
         try:
-            return list(self.athletes_collection.find().limit(200))
+            return list(self.athletes_collection.find({}, {'_id': 1, 'athlete_full_name': 1, 'athlete_year_birth': 1}))
         except Exception as e:
             print(f"Errore nel recuperare tutti gli atleti: {e}")
             return []
@@ -26,15 +26,15 @@ class AthleteRepository:
             # Utilizziamo il regex per cercare la stringa parziale in tutti i campi
             query = {
                 '$or': [
-                    {'athlete_url': {'$regex': search_query, '$options': 'i'}},
                     {'athlete_full_name': {'$regex': search_query, '$options': 'i'}},
                     {'games_participations': {'$regex': search_query, '$options': 'i'}},
                     {'first_game': {'$regex': search_query, '$options': 'i'}},
                     {'athlete_year_birth': {'$regex': search_query, '$options': 'i'}},
                     {'athlete_medals': {'$regex': search_query, '$options': 'i'}},
-                    {'bio': {'$regex': search_query, '$options': 'i'}}
                 ]
             }
+                    #{'athlete_url': {'$regex': search_query, '$options': 'i'}},
+                    #{'bio': {'$regex': search_query, '$options': 'i'}}
             results = list(self.athletes_collection.find(query).limit(200))
             return results
         except Exception as e:

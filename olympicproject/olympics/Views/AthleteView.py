@@ -27,14 +27,14 @@ class AthleteView(View):
 
             athlete_data = {
                 'id': str(athlete['_id']),  # Converti ObjectId in stringa per JSON
-                'athlete_url': athlete.get('athlete_url',''),
                 'athlete_full_name': athlete.get('athlete_full_name', ''),
-                'games_participations': athlete.get('games_participations',''),
-                'first_game': athlete.get('first_game',''),
-                'athlete_year_birth': athlete.get('athlete_year_birth',''),
-                'athlete_medals': athlete.get('athlete_medals',''),
-                'bio': athlete.get('bio','')
+                'athlete_year_birth': athlete.get('athlete_year_birth','')
             }
+                #'athlete_url': athlete.get('athlete_url',''),
+                #'games_participations': athlete.get('games_participations',''),
+                #'first_game': athlete.get('first_game',''),
+                #'athlete_medals': athlete.get('athlete_medals',''),
+                #'bio': athlete.get('bio','')
             data.append(athlete_data)
 
         return JsonResponse(data, safe=False)
@@ -52,14 +52,14 @@ class AthleteView(View):
 
             athlete_data = {
                 'id': str(athlete['_id']),  # Converti ObjectId in stringa per JSON
-                'athlete_url': athlete.get('athlete_url',''),
                 'athlete_full_name': athlete.get('athlete_full_name', ''),
                 'games_participations': athlete.get('games_participations',''),
                 'first_game': athlete.get('first_game',''),
                 'athlete_year_birth': athlete.get('athlete_year_birth',''),
-                'athlete_medals': athlete.get('athlete_medals',''),
-                'bio': athlete.get('bio','')
+                'athlete_medals': athlete.get('athlete_medals','')
             }
+                #'athlete_url': athlete.get('athlete_url',''),
+                #'bio': athlete.get('bio','')
             data.append(athlete_data)
 
         return JsonResponse(data, safe=False)
@@ -70,13 +70,13 @@ class AthleteView(View):
         #data = {"id": str(athlete._id), "name": athlete.name, "sport": athlete.sport, "age": athlete.age}
         data = {
                 'id': str(athlete['_id']),  
-                'athlete_url': athlete.get('athlete_url',''),
+                #'athlete_url': athlete.get('athlete_url',''),
                 'athlete_full_name': athlete.get('athlete_full_name', ''),
                 'games_participations': athlete.get('games_participations',''),
                 'first_game': athlete.get('first_game',''),
                 'athlete_year_birth': athlete.get('athlete_year_birth',''),
                 'athlete_medals': athlete.get('athlete_medals',''),
-                'bio': athlete.get('bio','')
+                #'bio': athlete.get('bio','')
             }
         return JsonResponse(data)
     
@@ -84,23 +84,23 @@ class AthleteView(View):
     def create_athlete(self, requestData):
         data = requestData
         athlete = self.athlete_repository.create_athlete(
-            data.get('athlete_url'),
+            #data.get('athlete_url'),
             data.get('athlete_full_name'),
             data.get('games_participations'),
             data.get('first_game'),
             data.get('athlete_year_birth'),
             data.get('athlete_medals'),
-            data.get('bio')
+            #data.get('bio')
         )
         return JsonResponse({
             "id": str(athlete['_id']),
-            "athlete_url": athlete.get('athlete_url',''),
+            #"athlete_url": athlete.get('athlete_url',''),
             "athlete_full_name": athlete.get('athlete_full_name', ''),
             "games_participations": athlete.get('games_participations',''),
             "first_game": athlete.get('first_game',''),
             "athlete_year_birth": athlete.get('athlete_year_birth',''),
             "athlete_medals": athlete.get('athlete_medals',''),
-            "bio": athlete.get('bio','')
+            #"bio": athlete.get('bio','')
         })
 
     @request_mapping("/update/<str:athlete_id>", method="post")
@@ -108,23 +108,23 @@ class AthleteView(View):
         data = requestData
         athlete = self.athlete_repository.update_athlete(
             data.get('_id'), 
-            data.get('athlete_url'),
+            #data.get('athlete_url'),
             data.get('athlete_full_name'),
             data.get('games_participations'),
             data.get('first_game'),
             data.get('athlete_year_birth'),
             data.get('athlete_medals'),
-            data.get('bio')
+            #data.get('bio')
         )
         return JsonResponse({
             "id": str(athlete['_id']),
-            "athlete_url": athlete.get('athlete_url',''),
+            #"athlete_url": athlete.get('athlete_url',''),
             "athlete_full_name": athlete.get('athlete_full_name', ''),
             "games_participations": athlete.get('games_participations',''),
             "first_game": athlete.get('first_game',''),
             "athlete_year_birth": athlete.get('athlete_year_birth',''),
             "athlete_medals": athlete.get('athlete_medals',''),
-            "bio": athlete.get('bio','')
+            #"bio": athlete.get('bio','')
         })
 
     @request_mapping("/delete/<str:athlete_id>", method="get")
