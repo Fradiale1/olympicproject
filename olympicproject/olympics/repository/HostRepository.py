@@ -61,6 +61,26 @@ class HostRepository:
         except Exception as e:
             print(f"Errore nella ricerca degli host per '{search_query}': {e}")
             return []
+        
+    def filter_by_season(self, search_query):
+        try:
+            # Utilizziamo il regex per cercare la stringa parziale in tutti i campi
+            query = {
+                '$or': [
+                    {'game_slug': {'$regex': search_query, '$options': 'i'}},
+                    {'game_end_date': {'$regex': search_query, '$options': 'i'}},
+                    {'game_start_date': {'$regex': search_query, '$options': 'i'}},
+                    {'game_location': {'$regex': search_query, '$options': 'i'}},
+                    {'game_name': {'$regex': search_query, '$options': 'i'}},
+                    {'game_season': {'$regex': search_query, '$options': 'i'}},
+                    {'game_year': {'$regex': search_query, '$options': 'i'}}
+                ]
+            }
+            results = list(self.hosts_collection.find(query))
+            return results
+        except Exception as e:
+            print(f"Errore nella ricerca degli host per '{search_query}': {e}")
+            return []
 
 
     def create_host(self, game_end_date, game_start_date, game_location, game_name, game_season, game_year):

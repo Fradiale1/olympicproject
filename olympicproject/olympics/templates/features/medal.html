@@ -10,61 +10,112 @@
 <div class="d-flex justify-content-end w-100 px-2 pt-2 mb-3">
     <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createModal" onclick="openCreateModal()">Aggiungi</button>
 </div>
-<div class="card mb-4">
-    <div class="card-header">
-        <i class="fas fa-table me-1"></i>
-        Tabella delle Medaglie
-    </div>
-    <div class="card-body">
-        <table id="datatablesSimple">
-            <thead>
-                <tr>
-                    <th>Discipline</th>
-                    <th>Slug Game</th>
-                    <th>Event Title</th>
-                    <th>Event Gender</th>
-                    <th>Medal Type</th>
-                    <th>Participant Type</th>
-                    <th>Participant Title</th>
-                    <th>Athlete Name</th>
-                    <th>Country Name</th>
-                </tr>
-            </thead>
-            <tfoot>
-                <tr>
-                    <th>Discipline</th>
-                    <th>Slug Game</th>
-                    <th>Event Title</th>
-                    <th>Event Gender</th>
-                    <th>Medal Type</th>
-                    <th>Participant Type</th>
-                    <th>Participant Title</th>
-                    <th>Athlete Name</th>
-                    <th>Country Name</th>
-                </tr>
-            </tfoot>
-            <tbody>
-                {% for medal in medals %}
-                <tr>
-                    <td>{{ medal.discipline_title }}</td>
-                    <td>{{ medal.slug_game }}</td>
-                    <td>{{ medal.event_title }}</td>
-                    <td>{{ medal.event_gender }}</td>
-                    <td>{{ medal.medal_type }}</td>
-                    <td>{{ medal.participant_type }}</td>
-                    <td>{{ medal.participant_title }}</td>
-                    <td>{{ medal.athlete_full_name }}</td>
-                    <td>{{ medal.country_name }}</td>
-                    <td>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal" onclick="openUpdateModal('{{ medal.id }}')">Modifica</button>
-                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="openDeleteModal('{{ medal.id }}')">Cancella</button>
-                    </td>
-                </tr>
+
+<!--filter-->
+<div class="row px-4 mx-auto w-100">
+    <form action="{% url 'filter_by_nation' %}" method="GET" class="mb-4 px-0" id="nationFilterForm">
+        <div class="d-flex align-items-center">
+            <label class="me-2">Seleziona Paese:</label>
+            <select name="nation" class="form-control flex-grow-1 me-2" onchange="document.getElementById('nationFilterForm').submit();">
+                <option selected>Seleziona</option>
+                {% for medal_nation in medal_nations %}
+                <option value="{{ medal_nation.country_name }}">{{ medal_nation.country_name }}</option>
                 {% endfor %}
-            </tbody>
-        </table>
-    </div>
+            </select>
+        </div>
+    </form>
 </div>
+
+<!--filter-->
+<div class="row px-4 mx-auto w-100">
+    <form action="{% url 'filter_by_gender' %}" method="GET" class="mb-4 px-0" id="genderFilterForm">
+        <div class="d-flex align-items-center">
+            <label class="me-2">Seleziona Genere:</label>
+            <select name="gender" class="form-select flex-grow-1 me-2" onchange="document.getElementById('genderFilterForm').submit();">
+                <option selected>Seleziona</option>
+                <option value="Mixed">Misto</option>
+                <option value="Men">Uomo</option>
+                <option value="Women">Donna</option>
+            </select>
+        </div>
+    </form>
+</div>
+<!--card-->
+<div class="row p-4 mx-auto w-100">
+    {% for medal in page_obj %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="bg-white rounded shadow p-4">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h3 class="h5 font-weight-semibold">{{ medal.discipline_title }}</h3>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="text-muted">Genere: {{ medal.event_gender }}</span>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span class="text-muted">Paese: {{ medal.country_name }}</span>
+                </div>
+                <div class="mt-4">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal" onclick="openUpdateModal('{{ medal.id }}')">Modifica</button>
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="openDeleteModal('{{ medal.id }}')">Cancella</button>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+<!--pagination-->
+<nav aria-label="Page navigation">
+    <ul class="pagination justify-content-end p-4">
+        {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?{% if request.GET.nation %}nation={{ request.GET.nation }}&{% endif %}{% if request.GET.gender %}gender={{ request.GET.gender }}&{% endif %}page=1" aria-label="First">
+                    <span aria-hidden="true">&laquo;&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?{% if request.GET.nation %}nation={{ request.GET.nation }}&{% endif %}{% if request.GET.gender %}gender={{ request.GET.gender }}&{% endif %}page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+                <span class="page-link" aria-label="First">&laquo;&laquo;</span>
+            </li>
+            <li class="page-item disabled">
+                <span class="page-link" aria-label="Previous">&laquo;</span>
+            </li>
+        {% endif %}
+
+        {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+                <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                <li class="page-item"><a class="page-link" href="?{% if request.GET.nation %}nation={{ request.GET.nation }}&{% endif %}{% if request.GET.gender %}gender={{ request.GET.gender }}&{% endif %}page={{ num }}">{{ num }}</a></li>
+            {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?{% if request.GET.nation %}nation={{ request.GET.nation }}&{% endif %}{% if request.GET.gender %}gender={{ request.GET.gender }}&{% endif %}page={{ page_obj.next_page_number }}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?{% if request.GET.nation %}nation={{ request.GET.nation }}&{% endif %}{% if request.GET.gender %}gender={{ request.GET.gender }}&{% endif %}page={{ page_obj.paginator.num_pages }}" aria-label="Last">
+                    <span aria-hidden="true">&raquo;&raquo;</span>
+                </a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+                <span class="page-link" aria-label="Next">&raquo;</span>
+            </li>
+            <li class="page-item disabled">
+                <span class="page-link" aria-label="Last">&raquo;&raquo;</span>
+            </li>
+        {% endif %}
+    </ul>
+</nav>
+
 
 <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">

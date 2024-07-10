@@ -58,6 +58,32 @@ class HostView(View):
             data.append(host_data)
 
         return JsonResponse(data, safe=False)
+    
+    @request_mapping("/filter/<str:string>", method="get")
+    def filter_by_season(self, request, string):
+        hosts = self.host_repository.filter_by_season(string)
+        #year = int(datetime.date.today().strftime("%Y"))
+        
+        data = []
+        for host in hosts:
+            #athlet_age = athlete.get('athlete_year_birth', '')
+            #if(athlet_age != ''):
+            #    athlet_age = int(year) - athlet_age
+
+            host_data = {
+                'id': str(host['_id']),  # Converti ObjectId in stringa per JSON
+                'game_slug': host.get('game_slug',''),
+                'game_end_date': host.get('game_end_date', ''),
+                'game_start_date': host.get('game_start_date',''),
+                'game_location': host.get('game_location',''),
+                'game_name': host.get('game_name',''),
+                'game_season': host.get('game_season',''),
+                'game_year': host.get('game_year','')
+            }
+            data.append(host_data)
+
+        return JsonResponse(data, safe=False)
+
 
     @request_mapping("/getById/<str:host_id>", method="get") #@get("/{host_id}")
     def get_host_by_id(self, request, host_id):

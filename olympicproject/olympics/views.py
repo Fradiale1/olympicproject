@@ -123,7 +123,7 @@ def search_host(request):
    # athletes = json.loads(AthleteView().search_athletes(request, string_searchbar).content)  # Decodifica del JSON
     hosts = json.loads(HostView().search_hosts(request, string_searchbar).content)
 
-    paginator = Paginator(hosts, 9)  # 10 atleti per pagina
+    paginator = Paginator(hosts, 9)  
 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -132,7 +132,17 @@ def search_host(request):
     return render(request, 'features/host.html', {'page_obj': page_obj}) #'athletes': athletes,
 
 @csrf_exempt
+def filter_by_season(request):
+    season = request.GET.get('season')
+   # athletes = json.loads(AthleteView().search_athletes(request, string_searchbar).content)  # Decodifica del JSON
+    hosts = json.loads(HostView().filter_by_season(request, season).content)
 
+    paginator = Paginator(hosts, 9)  
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+   
+    return render(request, 'features/host.html', {'page_obj': page_obj}) #'athletes': athletes,
 
 @csrf_exempt
 def create_host(request): 
@@ -203,13 +213,55 @@ def delete_host(request):
 
 
 
+
 def medal(request):
 
     athletes = json.loads(AthleteView().get_all_athletes(request).content)  # Decodifica del JSON
     medals = json.loads(MedalView().get_all_medals(request).content)
+    medal_nations=json.loads(MedalView().get_all_medals_by_nation(request).content)
     hosts = json.loads(HostView().get_all_hosts(request).content)
 
-    return render(request, 'features/medal.html', {'athletes': athletes, 'medals': medals, 'hosts': hosts})
+    paginator = Paginator(medals, 9)  
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'features/medal.html', {'page_obj': page_obj,'medal_nations': medal_nations,'athletes': athletes, 'hosts': hosts})
+
+
+@csrf_exempt
+def filter_by_nation(request):
+    nation = request.GET.get('nation')
+    medals = json.loads(MedalView().filter_by_nation(request, nation).content)
+    athletes = json.loads(AthleteView().get_all_athletes(request).content)
+    hosts = json.loads(HostView().get_all_hosts(request).content)
+    medal_nations=json.loads(MedalView().get_all_medals_by_nation(request).content)
+
+
+    paginator = Paginator(medals, 9)  
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+   
+    return render(request, 'features/medal.html', {'page_obj': page_obj,'medal_nations': medal_nations,'athletes': athletes, 'hosts': hosts}) #'athletes': athletes,
+
+
+@csrf_exempt
+def filter_by_gender(request):
+    gender = request.GET.get('gender')
+    medals = json.loads(MedalView().filter_by_gender(request, gender).content)
+    athletes = json.loads(AthleteView().get_all_athletes(request).content)
+    hosts = json.loads(HostView().get_all_hosts(request).content)
+    medal_nations=json.loads(MedalView().get_all_medals_by_nation(request).content)
+
+
+    paginator = Paginator(medals, 9)  
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+   
+    return render(request, 'features/medal.html', {'page_obj': page_obj,'medal_nations': medal_nations,'athletes': athletes, 'hosts': hosts})
+
 
 @csrf_exempt
 def create_medal(request): 

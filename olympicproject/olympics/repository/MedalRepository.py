@@ -14,12 +14,52 @@ class MedalRepository:
             print(f"Errore nel recuperare tutte le medaglie: {e}")
             return []
 
+
+    def get_all_medals_by_nation(self):
+        all_medals = self.get_all_medals()
+        medals_by_nation = {}
+        try:
+            for medal in all_medals:
+                country_name = medal.get('country_name')
+                if country_name:
+                    if country_name not in medals_by_nation:
+                        medals_by_nation[country_name] = medal
+            return list(medals_by_nation.values())
+        except Exception as e:
+            print(f"Errore nel recuperare tutte le medaglie per nazione: {e}")
+            return []
+
     def get_medal_by_id(self, medal_id):
         try:
             return self.medals_collection.find_one({'_id': ObjectId(medal_id)})
         except Exception as e:
             print(f"Errore nel recuperare la medaglia con ID {medal_id}: {e}")
             return None
+
+
+    def filter_by_gender(self, search_query):
+        try:
+            query = {
+                'event_gender': search_query  # Filtra esattamente per il campo "event_gender"
+            }
+            results = list(self.medals_collection.find(query))
+            return results
+        except Exception as e:
+            print(f"Errore nella ricerca delle medaglie per '{search_query}' nel campo event_gender: {e}")
+            return []
+        
+        
+
+    def filter_by_nation(self, search_query):
+        try:
+            query = {
+                'country_name': search_query  # Filtra esattamente per il campo "country_name"
+            }
+            results = list(self.medals_collection.find(query))
+            return results
+        except Exception as e:
+            print(f"Errore nella ricerca delle medaglie per '{search_query}' nel campo country_name: {e}")
+            return []
 
     def create_medal(self, discipline_title, slug_game, event_title, event_gender, medal_type, participant_type, participant_title, athlete_url, athlete_full_name, country_name, country_code, country_3_letter_code):
         medal = {
