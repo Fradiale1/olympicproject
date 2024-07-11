@@ -17,7 +17,7 @@ def athlete(request):
     athletes = json.loads(AthleteView().get_all_athletes(request).content)  # Decodifica del JSON
     hosts = json.loads(HostView().get_all_hosts(request).content)
 
-    paginator = Paginator(athletes, 9)  # 10 atleti per pagina
+    paginator = Paginator(athletes, 12)  # 10 atleti per pagina
 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -30,7 +30,7 @@ def search_athlete(request):
     athletes = json.loads(AthleteView().search_athletes(request, string_searchbar).content)  # Decodifica del JSON
     hosts = json.loads(HostView().get_all_hosts(request).content)
 
-    paginator = Paginator(athletes, 9)  # 10 atleti per pagina
+    paginator = Paginator(athletes, 12)  # 10 atleti per pagina
 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -110,7 +110,7 @@ def delete_athlete(request):
 def host(request):
     hosts = json.loads(HostView().get_all_hosts(request).content)
     #return render(request, 'features/host.html', {'hosts': hosts })
-    paginator = Paginator(hosts, 9)  # 10 host per pagina
+    paginator = Paginator(hosts, 12)  # 10 host per pagina
 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -122,9 +122,9 @@ def search_host(request):
     string_searchbar = request.GET.get('string_searchbar')
     season = request.GET.get('season')
    # athletes = json.loads(AthleteView().search_athletes(request, string_searchbar).content)  # Decodifica del JSON
-    hosts = json.loads(HostView().search_hosts(request, string_searchbar).content)
+    hosts = json.loads(HostView().search_hosts(request, string_searchbar, season).content)
 
-    paginator = Paginator(hosts, 9)  
+    paginator = Paginator(hosts, 12)  
 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)

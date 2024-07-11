@@ -35,8 +35,8 @@ class HostView(View):
         return JsonResponse(data, safe=False)
     
     @request_mapping("/search/<str:string>", method="get")
-    def search_hosts(self, request, string):
-        hosts = self.host_repository.search_hosts(string)
+    def search_hosts(self, request, string, season):
+        hosts = self.host_repository.search_hosts(string, season)
         #year = int(datetime.date.today().strftime("%Y"))
         
         data = []

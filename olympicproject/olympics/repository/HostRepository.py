@@ -42,7 +42,7 @@ class HostRepository:
         
         
 
-    def search_hosts(self, search_query):
+    def search_hosts(self, search_query, season):
         try:
             # Utilizziamo il regex per cercare la stringa parziale in tutti i campi
             query = {
