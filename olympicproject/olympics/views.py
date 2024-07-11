@@ -120,6 +120,7 @@ def host(request):
 
 def search_host(request):
     string_searchbar = request.GET.get('string_searchbar')
+    season = request.GET.get('season')
    # athletes = json.loads(AthleteView().search_athletes(request, string_searchbar).content)  # Decodifica del JSON
     hosts = json.loads(HostView().search_hosts(request, string_searchbar).content)
 

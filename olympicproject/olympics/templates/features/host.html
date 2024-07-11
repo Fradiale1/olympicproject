@@ -16,20 +16,12 @@
     <form action="{% url 'search_host' %}" method="GET" class="mb-4 px-0">
         <div class="d-flex align-items-center">
             <input type="text" name="string_searchbar" class="form-control flex-grow-1 me-2" placeholder="Cerca per nome...">
-            <button type="submit" class="btn btn-primary">Cerca</button>
-        </div>
-    </form>
-</div>
-<!--filter-->
-<div class="row px-4 mx-auto w-100">
-    <form action="{% url 'filter_by_season' %}" method="GET" class="mb-4 px-0" id="seasonFilterForm">
-        <div class="d-flex align-items-center">
-            <label class="me-2">Seleziona stagione:</label>
-            <select name="season" class="form-control flex-grow-1 me-2" onchange="document.getElementById('seasonFilterForm').submit();">
-                <option value="">Seleziona</option>
+            <select name="season" class="form-select" aria-label="Default select example">
+                <option selected value="">Tutte le stagioni</option>
                 <option value="Summer">Estate</option>
                 <option value="Winter">Inverno</option>
             </select>
+            <button type="submit" class="btn btn-primary">Cerca</button>
         </div>
     </form>
 </div>

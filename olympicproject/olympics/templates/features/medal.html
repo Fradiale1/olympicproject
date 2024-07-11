@@ -15,9 +15,8 @@
 <div class="row px-4 mx-auto w-100">
     <form action="{% url 'filter_by_nation' %}" method="GET" class="mb-4 px-0" id="nationFilterForm">
         <div class="d-flex align-items-center">
-            <label class="me-2">Seleziona Paese:</label>
             <select name="nation" class="form-control flex-grow-1 me-2" onchange="document.getElementById('nationFilterForm').submit();">
-                <option selected>Seleziona</option>
+                <option selected>Tutti i paesi</option>
                 {% for medal_nation in medal_nations %}
                 <option value="{{ medal_nation.country_name }}">{{ medal_nation.country_name }}</option>
                 {% endfor %}
@@ -30,9 +29,8 @@
 <div class="row px-4 mx-auto w-100">
     <form action="{% url 'filter_by_gender' %}" method="GET" class="mb-4 px-0" id="genderFilterForm">
         <div class="d-flex align-items-center">
-            <label class="me-2">Seleziona Genere:</label>
             <select name="gender" class="form-select flex-grow-1 me-2" onchange="document.getElementById('genderFilterForm').submit();">
-                <option selected>Seleziona</option>
+                <option selected>Tutti i generi</option>
                 <option value="Mixed">Misto</option>
                 <option value="Men">Uomo</option>
                 <option value="Women">Donna</option>
