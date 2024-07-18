@@ -45,17 +45,27 @@ class HostRepository:
     def search_hosts(self, search_query, season):
         try:
             # Utilizziamo il regex per cercare la stringa parziale in tutti i campi
+            # Base query
             query = {
-                '$or': [
-                    {'game_slug': {'$regex': search_query, '$options': 'i'}},
-                    {'game_end_date': {'$regex': search_query, '$options': 'i'}},
-                    {'game_start_date': {'$regex': search_query, '$options': 'i'}},
-                    {'game_location': {'$regex': search_query, '$options': 'i'}},
-                    {'game_name': {'$regex': search_query, '$options': 'i'}},
-                    {'game_season': {'$regex': search_query, '$options': 'i'}},
-                    {'game_year': {'$regex': search_query, '$options': 'i'}}
+                '$and':[
+                    {
+                        '$or': [
+                            {'game_slug': {'$regex': search_query, '$options': 'i'}},
+                            {'game_name': {'$regex': search_query, '$options': 'i'}},
+                        ]
+                    },
+                    {'game_season': {'$regex': season, '$options': 'i'}}
                 ]
+                
             }
+
+            #if season:
+            #    query['$and'] = [{'game_season': {'$regex': season, '$options': 'i'}}]
+                    #
+                    #{'game_end_date': {'$regex': search_query, '$options': 'i'}},
+                    #{'game_start_date': {'$regex': search_query, '$options': 'i'}},
+                    #{'game_location': {'$regex': search_query, '$options': 'i'}},
+                    #{'game_year': {'$regex': search_query, '$options': 'i'}}
             results = list(self.hosts_collection.find(query))
             return results
         except Exception as e:

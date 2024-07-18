@@ -14,14 +14,16 @@
 <!--searchbar-->
 <div class="row px-4 mx-auto w-100">
     <form action="{% url 'search_host' %}" method="GET" class="mb-4 px-0">
-        <div class="d-flex align-items-center">
-            <input type="text" name="string_searchbar" class="form-control flex-grow-1 me-2" placeholder="Cerca per nome...">
-            <select name="season" class="form-select" aria-label="Default select example">
-                <option selected value="">Tutte le stagioni</option>
-                <option value="Summer">Estate</option>
-                <option value="Winter">Inverno</option>
-            </select>
-            <button type="submit" class="btn btn-primary">Cerca</button>
+        <div class="d-flex flex-column flex-sm-row gap-2">
+            <input type="text" name="string_searchbar" class="form-control" placeholder="Cerca per nome...">
+            <div class="d-flex flex-row gap-2">
+                <select name="season" class="form-select w-auto" aria-label="Default select example">
+                    <option selected value="">Tutte le stagioni</option>
+                    <option value="Summer">Estate</option>
+                    <option value="Winter">Inverno</option>
+                </select>
+                <button type="submit" class="btn btn-primary w-100">Cerca</button>
+            </div>
         </div>
     </form>
 </div>
