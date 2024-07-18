@@ -38,7 +38,6 @@ def search_athlete(request):
     
     return render(request, 'features/athlete.html', {'page_obj': page_obj, 'hosts': hosts}) #'athletes': athletes,
     
-
 @csrf_exempt
 def create_athlete(request): 
     if request.method == 'POST':
@@ -109,7 +108,7 @@ def delete_athlete(request):
 # Creazione view Host
 def host(request):
     hosts = json.loads(HostView().get_all_hosts(request).content)
-    #return render(request, 'features/host.html', {'hosts': hosts })
+    
     paginator = Paginator(hosts, 12)  # 10 host per pagina
 
     page_number = request.GET.get('page')
@@ -121,7 +120,7 @@ def host(request):
 def search_host(request):
     string_searchbar = request.GET.get('string_searchbar')
     season = request.GET.get('season')
-   # athletes = json.loads(AthleteView().search_athletes(request, string_searchbar).content)  # Decodifica del JSON
+    
     hosts = json.loads(HostView().search_hosts(request, string_searchbar, season).content)
 
     paginator = Paginator(hosts, 12)  
@@ -130,19 +129,6 @@ def search_host(request):
     page_obj = paginator.get_page(page_number)
    
     
-    return render(request, 'features/host.html', {'page_obj': page_obj}) #'athletes': athletes,
-
-@csrf_exempt
-def filter_by_season(request):
-    season = request.GET.get('season')
-   # athletes = json.loads(AthleteView().search_athletes(request, string_searchbar).content)  # Decodifica del JSON
-    hosts = json.loads(HostView().filter_by_season(request, season).content)
-
-    paginator = Paginator(hosts, 9)  
-
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-   
     return render(request, 'features/host.html', {'page_obj': page_obj}) #'athletes': athletes,
 
 @csrf_exempt
@@ -211,10 +197,6 @@ def delete_host(request):
     
     return HttpResponse(status=405)
 
-
-
-
-
 def medal(request):
 
     athletes = json.loads(AthleteView().get_all_athletes(request).content)  # Decodifica del JSON
@@ -222,7 +204,7 @@ def medal(request):
     medal_nations=json.loads(MedalView().get_all_medals_by_nation(request).content)
     hosts = json.loads(HostView().get_all_hosts(request).content)
 
-    paginator = Paginator(medals, 9)  
+    paginator = Paginator(medals, 12)  
 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -231,37 +213,23 @@ def medal(request):
 
 
 @csrf_exempt
-def filter_by_nation(request):
+def search_medal(request):
+    string_searchbar = request.GET.get('string_searchbar')
     nation = request.GET.get('nation')
-    medals = json.loads(MedalView().filter_by_nation(request, nation).content)
+    gender = request.GET.get('gender')
+
+    medals = json.loads(MedalView().search_medal(request,string_searchbar, nation, gender).content)
     athletes = json.loads(AthleteView().get_all_athletes(request).content)
     hosts = json.loads(HostView().get_all_hosts(request).content)
     medal_nations=json.loads(MedalView().get_all_medals_by_nation(request).content)
 
 
-    paginator = Paginator(medals, 9)  
+    paginator = Paginator(medals, 12)  
 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
    
     return render(request, 'features/medal.html', {'page_obj': page_obj,'medal_nations': medal_nations,'athletes': athletes, 'hosts': hosts}) #'athletes': athletes,
-
-
-@csrf_exempt
-def filter_by_gender(request):
-    gender = request.GET.get('gender')
-    medals = json.loads(MedalView().filter_by_gender(request, gender).content)
-    athletes = json.loads(AthleteView().get_all_athletes(request).content)
-    hosts = json.loads(HostView().get_all_hosts(request).content)
-    medal_nations=json.loads(MedalView().get_all_medals_by_nation(request).content)
-
-
-    paginator = Paginator(medals, 9)  
-
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-   
-    return render(request, 'features/medal.html', {'page_obj': page_obj,'medal_nations': medal_nations,'athletes': athletes, 'hosts': hosts})
 
 
 @csrf_exempt

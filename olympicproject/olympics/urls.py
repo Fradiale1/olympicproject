@@ -32,17 +32,14 @@ urlpatterns = [
     path('create_host/', views.create_host, name='create_host'),
     path('update_host/', views.update_host, name='update_host'),
     path('delete_host/', views.delete_host, name='delete_host'),
-    path('filter_by_season',views.filter_by_season, name='filter_by_season'),
     
 
     #medaglie
     path('medaglie', views.medal, name='medaglie'),
+    path('search_medal', views.search_medal, name='search_medal'),
     path('create_medal/', views.create_medal, name='create_medal'),
     path('update_medal/', views.update_medal, name='update_medal'),
     path('delete_medal/', views.delete_medal, name='delete_medal'),
-    path('filter_by_nation',views.filter_by_nation, name='filter_by_nation'),
-    path('filter_by_gender',views.filter_by_gender, name='filter_by_gender'),
-
 
 
     #path del template

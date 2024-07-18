@@ -37,28 +37,25 @@ class MedalRepository:
             return None
 
 
-    def filter_by_gender(self, search_query):
+    def search_medal(self, string, nation, gender):
         try:
             query = {
-                'event_gender': search_query  # Filtra esattamente per il campo "event_gender"
-            }
-            results = list(self.medals_collection.find(query))
-            return results
-        except Exception as e:
-            print(f"Errore nella ricerca delle medaglie per '{search_query}' nel campo event_gender: {e}")
-            return []
-        
-        
+                    
+                }
+            
+            if string:
+                query['$and'] = [{'discipline_title': {'$regex': string, '$options': 'i'}}]
+            
+            if nation:
+                query['$or'] = [{'country_name': nation}]
 
-    def filter_by_nation(self, search_query):
-        try:
-            query = {
-                'country_name': search_query  # Filtra esattamente per il campo "country_name"
-            }
+            if gender:
+                query['$or'] = [{'event_gender': gender}]
+            
             results = list(self.medals_collection.find(query))
             return results
         except Exception as e:
-            print(f"Errore nella ricerca delle medaglie per '{search_query}' nel campo country_name: {e}")
+            print(f"Errore nella ricerca delle medaglie per l'uso dei filtri")
             return []
 
     def create_medal(self, discipline_title, slug_game, event_title, event_gender, medal_type, participant_type, participant_title, athlete_url, athlete_full_name, country_name, country_code, country_3_letter_code):

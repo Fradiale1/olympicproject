@@ -42,6 +42,7 @@ function openUpdateModal(medalId) {
     })
     .then(data => {
         data = JSON.parse(data);
+        console.log(data);
         setUpdateFieldModal(data);
     })
     .catch(error => {

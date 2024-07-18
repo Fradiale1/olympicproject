@@ -13,65 +13,75 @@
 
 <!--filter-->
 <div class="row px-4 mx-auto w-100">
-    <form action="{% url 'filter_by_nation' %}" method="GET" class="mb-4 px-0" id="nationFilterForm">
-        <div class="d-flex align-items-center">
-            <select name="nation" class="form-control flex-grow-1 me-2" onchange="document.getElementById('nationFilterForm').submit();">
-                <option selected>Tutti i paesi</option>
-                {% for medal_nation in medal_nations %}
-                <option value="{{ medal_nation.country_name }}">{{ medal_nation.country_name }}</option>
-                {% endfor %}
-            </select>
-        </div>
-    </form>
-</div>
-
-<!--filter-->
-<div class="row px-4 mx-auto w-100">
-    <form action="{% url 'filter_by_gender' %}" method="GET" class="mb-4 px-0" id="genderFilterForm">
-        <div class="d-flex align-items-center">
-            <select name="gender" class="form-select flex-grow-1 me-2" onchange="document.getElementById('genderFilterForm').submit();">
-                <option selected>Tutti i generi</option>
-                <option value="Mixed">Misto</option>
-                <option value="Men">Uomo</option>
-                <option value="Women">Donna</option>
-            </select>
+    <form action="{% url 'search_medal' %}" method="GET" class="mb-4 px-0" id="nationFilterForm">
+        <div class="d-flex flex-column flex-sm-row gap-2">
+            <input type="text" name="string_searchbar" class="form-control" placeholder="Cerca per disciplina...">
+            <div class="d-flex flex-row gap-2">
+                <select name="nation" class="form-select">
+                    <option selected value="">Tutti i paesi</option>
+                    {% for medal_nation in medal_nations %}
+                    <option value="{{ medal_nation.country_name }}">{{ medal_nation.country_name }}</option>
+                    {% endfor %}
+                </select>
+                <select name="gender" class="form-select">
+                    <option selected value="">Tutti i generi</option>
+                    <option value="Mixed">Misto</option>
+                    <option value="Men">Uomo</option>
+                    <option value="Women">Donna</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary sm:w-100">Cerca</button>
         </div>
     </form>
 </div>
 <!--card-->
 <div class="row p-4 mx-auto w-100">
-    {% for medal in page_obj %}
-        <div class="col-md-6 col-lg-4 mb-4">
-            <div class="bg-white rounded shadow p-4">
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                    <h3 class="h5 font-weight-semibold">{{ medal.discipline_title }}</h3>
-                </div>
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                    <span class="text-muted">Genere: {{ medal.event_gender }}</span>
-                </div>
-                <div class="d-flex justify-content-between align-items-center mb-2">
-                    <span class="text-muted">Paese: {{ medal.country_name }}</span>
-                </div>
-                <div class="mt-4">
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal" onclick="openUpdateModal('{{ medal.id }}')">Modifica</button>
-                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="openDeleteModal('{{ medal.id }}')">Cancella</button>
-                </div>
+    {% if page_obj|length == 0 %}
+        <div class="col-12 text-center">
+            <div class="alert" role="alert">
+                Nessuna medaglia trovata
             </div>
         </div>
-    {% endfor %}
+    {% else %}
+        {% for medal in page_obj %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="bg-white rounded shadow p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h3 class="h5 font-weight-semibold">{{ medal.discipline_title }}</h3>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        {% if medal.event_gender == 'Mixed' %}
+                            <span class="text-muted">Genere: Misto</span>
+                        {% elif medal.event_gender == 'Men' %}
+                            <span class="text-muted">Genere: Uomo</span>
+                        {% elif medal.event_gender == 'Women' %}
+                            <span class="text-muted">Genere: Donna</span>
+                        {% endif %}
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <span class="text-muted">Paese: {{ medal.country_name }}</span>
+                    </div>
+                    <div class="mt-4">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal" onclick="openUpdateModal('{{ medal.id }}')">Modifica</button>
+                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="openDeleteModal('{{ medal.id }}')">Cancella</button>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
 </div>
 
-<!--pagination-->
+{% if page_obj|length > 0 %}
 <nav aria-label="Page navigation">
     <ul class="pagination justify-content-end p-4">
         {% if page_obj.has_previous %}
             <li class="page-item">
-                <a class="page-link" href="?{% if request.GET.nation %}nation={{ request.GET.nation }}&{% endif %}{% if request.GET.gender %}gender={{ request.GET.gender }}&{% endif %}page=1" aria-label="First">
+                <a class="page-link" href="?{% if request.GET.string_searchbar %}string_searchbar={{ request.GET.string_searchbar }}&{% endif %}{% if request.GET.nation %}nation={{ request.GET.nation }}&{% endif %}{% if request.GET.gender %}gender={{ request.GET.gender }}&{% endif %}page=1" aria-label="First">
                     <span aria-hidden="true">&laquo;&laquo;</span>
                 </a>
             </li>
             <li class="page-item">
-                <a class="page-link" href="?{% if request.GET.nation %}nation={{ request.GET.nation }}&{% endif %}{% if request.GET.gender %}gender={{ request.GET.gender }}&{% endif %}page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                <a class="page-link" href="?{% if request.GET.string_searchbar %}string_searchbar={{ request.GET.string_searchbar }}&{% endif %}{% if request.GET.nation %}nation={{ request.GET.nation }}&{% endif %}{% if request.GET.gender %}gender={{ request.GET.gender }}&{% endif %}page={{ page_obj.previous_page_number }}" aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
@@ -88,18 +98,18 @@
             {% if page_obj.number == num %}
                 <li class="page-item active"><span class="page-link">{{ num }}</span></li>
             {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-                <li class="page-item"><a class="page-link" href="?{% if request.GET.nation %}nation={{ request.GET.nation }}&{% endif %}{% if request.GET.gender %}gender={{ request.GET.gender }}&{% endif %}page={{ num }}">{{ num }}</a></li>
+                <li class="page-item"><a class="page-link" href="?{% if request.GET.string_searchbar %}string_searchbar={{ request.GET.string_searchbar }}&{% endif %}{% if request.GET.nation %}nation={{ request.GET.nation }}&{% endif %}{% if request.GET.gender %}gender={{ request.GET.gender }}&{% endif %}page={{ num }}">{{ num }}</a></li>
             {% endif %}
         {% endfor %}
 
         {% if page_obj.has_next %}
             <li class="page-item">
-                <a class="page-link" href="?{% if request.GET.nation %}nation={{ request.GET.nation }}&{% endif %}{% if request.GET.gender %}gender={{ request.GET.gender }}&{% endif %}page={{ page_obj.next_page_number }}" aria-label="Next">
+                <a class="page-link" href="?{% if request.GET.string_searchbar %}string_searchbar={{ request.GET.string_searchbar }}&{% endif %}{% if request.GET.nation %}nation={{ request.GET.nation }}&{% endif %}{% if request.GET.gender %}gender={{ request.GET.gender }}&{% endif %}page={{ page_obj.next_page_number }}" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
             </li>
             <li class="page-item">
-                <a class="page-link" href="?{% if request.GET.nation %}nation={{ request.GET.nation }}&{% endif %}{% if request.GET.gender %}gender={{ request.GET.gender }}&{% endif %}page={{ page_obj.paginator.num_pages }}" aria-label="Last">
+                <a class="page-link" href="?{% if request.GET.string_searchbar %}string_searchbar={{ request.GET.string_searchbar }}&{% endif %}{% if request.GET.nation %}nation={{ request.GET.nation }}&{% endif %}{% if request.GET.gender %}gender={{ request.GET.gender }}&{% endif %}page={{ page_obj.paginator.num_pages }}" aria-label="Last">
                     <span aria-hidden="true">&raquo;&raquo;</span>
                 </a>
             </li>
@@ -113,6 +123,7 @@
         {% endif %}
     </ul>
 </nav>
+{% endif %}
 
 
 <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
@@ -134,7 +145,7 @@
                         <select class="form-select" aria-label="Default select example" id="SlugGameCreate" name="slug_game_create">
                             <option selected> Scegli la manifestazione</option>
                             {% for host in hosts %}
-                            <option value="{{ host.game_slug }}"> {{ host.game_slug }}</option>
+                            <option value="{{ host.game_slug }}"> {{ host.game_name }}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -146,26 +157,26 @@
                         <label for="EventGenderCreate" class="form-label">Categoria Evento</label>
                         <select class="form-select" id="EventGenderCreate" name="event_gender_create" aria-label="Default select example">
                             <option selected> Scegli la manifestazione</option>
-                            <option value="Mixed">Mixed</option>
-                            <option value="Women">Women</option>
-                            <option value="Men">Men</option>
+                            <option value="Mixed">Misto</option>
+                            <option value="Men">Uomo</option>
+                            <option value="Women">Donna</option>
                         </select>
                     </div>
                     <div class="mb-3">
                         <label for="MedalTypeCreate" class="form-label">Tipo Medaglia</label>
                         <select class="form-select" id="MedalTypeCreate" name="medal_type_create" aria-label="Default select example">
                             <option selected> Scegli la medaglia</option>
-                            <option value="GOLD">GOLD</option>
-                            <option value="SILVER">SILVER</option>
-                            <option value="BRONZE">BRONZE</option>
+                            <option value="GOLD">Oro</option>
+                            <option value="SILVER">Argento</option>
+                            <option value="BRONZE">Bronzo</option>
                         </select>
                     </div>
                     <div class="mb-3">
                         <label for="ParticipantTypeCreate" class="form-label">Tipo Partecipante</label>
                         <select class="form-select" id="ParticipantTypeCreate" name="participant_type_create" aria-label="Default select example">
                             <option selected> Scegli il tipo</option>
-                            <option value="GameTeam">GameTeam</option>
-                            <option value="Athlete">Athlete</option>
+                            <option value="GameTeam">Squadra</option>
+                            <option value="Athlete">Atleta</option>
                         </select>
                     </div>
                     <div class="mb-3">
@@ -209,7 +220,7 @@
                         <label for="SlugGameUpdate" class="form-label">Manifestazione</label>
                         <select class="form-select" aria-label="Default select example" id="SlugGameUpdate" name="slug_game_update">
                             {% for host in hosts %}
-                            <option value="{{ host.game_slug }}"> {{ host.game_slug }}</option>
+                            <option value="{{ host.game_slug }}"> {{ host.game_name }}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -221,26 +232,26 @@
                         <label for="EventGenderUpdate" class="form-label">Categoria Evento</label>
                         <select class="form-select" id="EventGenderUpdate" name="event_gender_update" aria-label="Default select example">
                             <option selected> Scegli la manifestazione</option>
-                            <option value="Mixed">Mixed</option>
-                            <option value="Women">Women</option>
-                            <option value="Men">Men</option>
+                            <option value="Mixed">Misto</option>
+                            <option value="Men">Uomo</option>
+                            <option value="Women">Donna</option>
                         </select>
                     </div>
                     <div class="mb-3">
                         <label for="MedalTypeUpdate" class="form-label">Tipo Medaglia</label>
                         <select class="form-select" id="MedalTypeUpdate" name="medal_type_update" aria-label="Default select example">
                             <option selected> Scegli la medaglia</option>
-                            <option value="GOLD">GOLD</option>
-                            <option value="SILVER">SILVER</option>
-                            <option value="BRONZE">BRONZE</option>
+                            <option value="GOLD">Oro</option>
+                            <option value="SILVER">Argento</option>
+                            <option value="BRONZE">Bronzo</option>
                         </select>
                     </div>
                     <div class="mb-3">
                         <label for="ParticipantTypeUpdate" class="form-label">Tipo Partecipante</label>
                         <select class="form-select" id="ParticipantTypeUpdate" name="participant_type_update" aria-label="Default select example">
                             <option selected> Scegli il tipo</option>
-                            <option value="GameTeam">GameTeam</option>
-                            <option value="Athlete">Athlete</option>
+                            <option value="GameTeam">Squadra</option>
+                            <option value="Athlete">Atleta</option>
                         </select>
                     </div>
                     <div class="mb-3">

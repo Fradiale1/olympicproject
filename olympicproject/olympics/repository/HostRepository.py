@@ -47,20 +47,14 @@ class HostRepository:
             # Utilizziamo il regex per cercare la stringa parziale in tutti i campi
             # Base query
             query = {
-                '$and':[
-                    {
-                        '$or': [
+                '$or': [
                             {'game_slug': {'$regex': search_query, '$options': 'i'}},
                             {'game_name': {'$regex': search_query, '$options': 'i'}},
                         ]
-                    },
-                    {'game_season': {'$regex': season, '$options': 'i'}}
-                ]
-                
             }
 
-            #if season:
-            #    query['$and'] = [{'game_season': {'$regex': season, '$options': 'i'}}]
+            if season:
+                query['$and'] = [{'game_season': season}]
                     #
                     #{'game_end_date': {'$regex': search_query, '$options': 'i'}},
                     #{'game_start_date': {'$regex': search_query, '$options': 'i'}},
