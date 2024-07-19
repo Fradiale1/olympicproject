@@ -41,6 +41,13 @@ urlpatterns = [
     path('update_medal/', views.update_medal, name='update_medal'),
     path('delete_medal/', views.delete_medal, name='delete_medal'),
 
+    #risultati
+    path('risultati', views.result, name='risultati'),
+    path('search_result', views.search_result, name='search_result'),
+    path('create_result/', views.create_result, name='create_result'),
+    path('update_result/', views.update_result, name='update_result'),
+    path('delete_result/', views.delete_result, name='delete_result'),
+
 
     #path del template
     path('static_navigation', views.static_navigation, name='static_navigation'),

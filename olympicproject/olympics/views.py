@@ -4,6 +4,7 @@ from django.urls import reverse
 from olympics.Views.AthleteView import AthleteView
 from olympics.Views.HostView import HostView
 from olympics.Views.MedalView import MedalView
+from olympics.Views.ResultView import ResultView
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from django.core.paginator import Paginator
 import json
@@ -304,6 +305,95 @@ def delete_medal(request):
         url = reverse('medaglie')
         response = HttpResponseRedirect(url)
         response.set_cookie('messaggio', 'Medaglia Eliminata')
+        response.set_cookie('codice_messaggio', '200')
+        return response
+    
+    return HttpResponse(status=405)
+
+def result(request):
+    results = json.loads(ResultView().get_all_results(request).content)
+    hosts = json.loads(HostView().get_all_hosts(request).content)
+    
+    paginator = Paginator(results, 12)  # 10 host per pagina
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'features/result.html', {'page_obj': page_obj, 'hosts': hosts}) #'results': results,
+
+def search_result(request):
+    string_searchbar = request.GET.get('string_searchbar')
+    results = json.loads(ResultView().search_results(request, string_searchbar).content)  # Decodifica del JSON
+    hosts = json.loads(HostView().get_all_hosts(request).content)
+
+    paginator = Paginator(results, 12)  # 10 atleti per pagina
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+   
+    
+    return render(request, 'features/result.html', {'page_obj': page_obj, 'hosts': hosts}) #'athletes': athletes,
+
+@csrf_exempt
+def create_result(request): 
+    if request.method == 'POST':
+        data = {
+            'discipline_title': request.POST.get('discipline_title_create',''),
+            'event_title': request.POST.get('event_title_create',''),
+            'slug_game': request.POST.get('slug_game_create',''),
+            'participant_type': request.POST.get('participant_type_create',''),
+            'rank_equal': request.POST.get('rank_equal_create',''),
+            'rank_position': request.POST.get('rank_position_create',''),
+            'country_name': request.POST.get('country_name_create',''),
+        }
+        result_view = ResultView()
+        result_view.create_result(data).content
+
+        url = reverse('risultati')
+        response = HttpResponseRedirect(url)
+        response.set_cookie('messaggio', 'risultato aggiornato')
+        response.set_cookie('codice_messaggio', '200')
+        return response
+    
+    return HttpResponse(status=405)
+
+@csrf_exempt
+def update_result(request):  
+    if request.method == 'POST':
+        data = {
+            '_id': request.POST.get('result_id_update',''),
+            'discipline_title': request.POST.get('discipline_title_update',''),
+            'event_title': request.POST.get('event_title_update',''),
+            'slug_game': request.POST.get('slug_game_update',''),
+            'participant_type': request.POST.get('participant_type_update',''),
+            'rank_equal': request.POST.get('rank_equal_update',''),
+            'rank_position': request.POST.get('rank_position_update',''),
+            'country_name': request.POST.get('country_name_update','')
+        }
+
+        result_view = ResultView()
+        result_view.update_result(data).content
+     
+        url = reverse('risultati')
+        response = HttpResponseRedirect(url)
+        response.set_cookie('messaggio', 'Risultato aggiornato')
+        response.set_cookie('codice_messaggio', '200')
+        return response
+    
+    return HttpResponse(status=405)
+
+@csrf_exempt
+def delete_result(request):
+    if request.method == 'POST':
+        result_id = request.POST.get('result_id_delete')
+        result_view = ResultView()
+        #delete_athlete_message = 
+        result_view.delete_result(request, result_id).content
+
+        # Esegui il reindirizzamento alla vista di destinazione
+        url = reverse('risultati')
+        response = HttpResponseRedirect(url)
+        response.set_cookie('messaggio', 'Risultato Eliminato')
         response.set_cookie('codice_messaggio', '200')
         return response
     
