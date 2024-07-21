@@ -47,10 +47,10 @@ class MedalRepository:
                 query['$and'] = [{'discipline_title': {'$regex': string, '$options': 'i'}}]
             
             if nation:
-                query['$or'] = [{'country_name': nation}]
+                 query['country_name'] = {'$regex': nation, '$options': 'i'}
 
             if gender:
-                query['$or'] = [{'event_gender': gender}]
+                 query['event_gender'] = gender
             
             results = list(self.medals_collection.find(query))
             return results

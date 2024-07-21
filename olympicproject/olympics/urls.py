@@ -49,6 +49,11 @@ urlpatterns = [
     path('delete_result/', views.delete_result, name='delete_result'),
 
 
+
+
+    #classifica
+    path('classifica', views.medal, name='classifica'),
+
     #path del template
     path('static_navigation', views.static_navigation, name='static_navigation'),
     path('light_sidenav', views.light_sidenav, name='light_sidenav'),

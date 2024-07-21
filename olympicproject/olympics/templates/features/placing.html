@@ -1,0 +1,124 @@
+{% extends 'index.html' %}
+
+{% load static %}
+
+{% block head %}
+<script type="text/javascript" src="{% static 'js/features/placing.js' %}"></script>
+{% endblock %}
+
+<!--filter-->
+<div class="row px-4 mx-auto w-100">
+    <form action="{% url 'search_placing' %}" method="GET" class="mb-4 px-0" id="placingFilterForm">
+        <div class="d-flex flex-column flex-sm-row gap-2">
+            <select name="discipline" class="form-select">
+                <option selected value="">Tutti le discipline</option>
+                {% for medal_discipline in medal_discipline %}
+                <option value="{{ medal_discipline.discipline_title }}">{{ medal_discipline.discipline_title }}</option>
+                {% endfor %}
+            </select>
+            <select name="event" class="form-select">
+                <option selected value="">Gli eventi disponibili</option>
+                {% for medal_event in medal_events %}
+                <option value="{{ medal_event.event_title }}">{{ medal_event.event_title }}</option>
+                {% endfor %}
+            </select>
+            <select name="olimpiade" class="form-select">
+                <option selected value="">Tutti le olimpiadi</option>
+                {% for medal_sluggame in medal_sluggames %}
+                <option value="{{ medal_sluggame.slug_game }}">{{ medal_sluggame.slug_game }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="btn btn-primary sm:w-100">Cerca</button>
+        </div>
+    </form>
+</div>
+
+
+<div class="row p-4 mx-auto w-100">
+    {% if page_obj|length == 0 %}
+        <div class="col-12 text-center">
+            <div class="alert" role="alert">
+                Nessun risultato trovato
+            </div>
+        </div>
+    {% else %}
+        <div class="col-12">
+            <ul class="list-group">
+                {% for result in page_obj %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center">
+                            <span class="badge badge-primary badge-pill mr-3">{{ forloop.counter }}</span>
+                            <div>
+                                <h5 class="mb-1">{{ medal.event_title }}</h5>
+                                <small>
+                                    <br>
+                                     Disciplina: {{ result.discipline_title }}
+                                    <br>
+                                    Posizione: {{ medal.rank_position }}
+                                    <br>
+                                    Paese: {{ medal.country_name }}
+                                    <br>
+                                    Tipo di partecipante: {{ medal.participant_type }}
+                                </small>
+                            </div>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endif %}
+</div>
+
+{% if page_obj|length > 0 %}
+<nav aria-label="Page navigation">
+    <ul class="pagination justify-content-end p-4">
+        {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?{% if request.GET.string_searchbar %}string_searchbar={{ request.GET.string_searchbar }}&{% endif %}{% if request.GET.nation %}nation={{ request.GET.nation }}&{% endif %}{% if request.GET.gender %}gender={{ request.GET.gender }}&{% endif %}page=1" aria-label="First">
+                    <span aria-hidden="true">&laquo;&laquo;</span>
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?{% if request.GET.string_searchbar %}string_searchbar={{ request.GET.string_searchbar }}&{% endif %}{% if request.GET.nation %}nation={{ request.GET.nation }}&{% endif %}{% if request.GET.gender %}gender={{ request.GET.gender }}&{% endif %}page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+                <span class="page-link" aria-label="First">&laquo;&laquo;</span>
+            </li>
+            <li class="page-item disabled">
+                <span class="page-link" aria-label="Previous">&laquo;</span>
+            </li>
+        {% endif %}
+
+        {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+                <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+                <li class="page-item"><a class="page-link" href="?{% if request.GET.string_searchbar %}string_searchbar={{ request.GET.string_searchbar }}&{% endif %}{% if request.GET.nation %}nation={{ request.GET.nation }}&{% endif %}{% if request.GET.gender %}gender={{ request.GET.gender }}&{% endif %}page={{ num }}">{{ num }}</a></li>
+            {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?{% if request.GET.string_searchbar %}string_searchbar={{ request.GET.string_searchbar }}&{% endif %}{% if request.GET.nation %}nation={{ request.GET.nation }}&{% endif %}{% if request.GET.gender %}gender={{ request.GET.gender }}&{% endif %}page={{ page_obj.next_page_number }}" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?{% if request.GET.string_searchbar %}string_searchbar={{ request.GET.string_searchbar }}&{% endif %}{% if request.GET.nation %}nation={{ request.GET.nation }}&{% endif %}{% if request.GET.gender %}gender={{ request.GET.gender }}&{% endif %}page={{ page_obj.paginator.num_pages }}" aria-label="Last">
+                    <span aria-hidden="true">&raquo;&raquo;</span>
+                </a>
+            </li>
+        {% else %}
+            <li class="page-item disabled">
+                <span class="page-link" aria-label="Next">&raquo;</span>
+            </li>
+            <li class="page-item disabled">
+                <span class="page-link" aria-label="Last">&raquo;&raquo;</span>
+            </li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}

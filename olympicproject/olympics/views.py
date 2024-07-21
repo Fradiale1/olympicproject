@@ -399,6 +399,30 @@ def delete_result(request):
     
     return HttpResponse(status=405)
 
+
+def placing(request):
+
+    return render(request, 'features/placing.html')
+
+@csrf_exempt
+def search_placing(request):
+    string_searchbar = request.GET.get('string_searchbar')
+    nation = request.GET.get('nation')
+    gender = request.GET.get('gender')
+
+    medals = json.loads(MedalView().search_medal(request,string_searchbar, nation, gender).content)
+    athletes = json.loads(AthleteView().get_all_athletes(request).content)
+    hosts = json.loads(HostView().get_all_hosts(request).content)
+    medal_nations=json.loads(MedalView().get_all_medals_by_nation(request).content)
+
+
+    paginator = Paginator(medals, 12)  
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+   
+    return render(request, 'features/medal.html', {'page_obj': page_obj,'medal_nations': medal_nations,'athletes': athletes, 'hosts': hosts}) #'athletes': athletes,
+
 #view per le pagine del template
 def static_navigation(request):
     return render(request, 'utils/layout-static.html')
