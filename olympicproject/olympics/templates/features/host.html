@@ -38,20 +38,20 @@
     {% else %}
         {% for host in page_obj %}
             <div class="col-md-6 col-lg-4 mb-4">
-                <div class="bg-white rounded shadow p-4">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
+                <div class="bg-white rounded shadow p-4 d-flex flex-column gap-3">
+                    <div class="d-flex justify-content-between align-items-center">
                         <h3 class="h5 font-weight-semibold">{{ host.game_name }}</h3>
                     </div>
-                    <div class="d-flex justify-content-between align-items-center mb-2">
+                    <div class="d-flex justify-content-between align-items-center">
                         {% if host.game_season == 'Summer' %}
                             <span class="text-muted">Stagione: Estate</span>
                         {% elif host.game_season == 'Winter' %}
                             <span class="text-muted">Stagione: Inverno</span>
                         {% endif %}
                     </div>
-                    <div class="mt-4">
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal" onclick="openUpdateModal('{{ host.id }}')">Modifica</button>
-                        <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="openDeleteModal('{{ host.id }}')">Cancella</button>
+                    <div class="d-flex gap-2">
+                        <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#updateModal" onclick="openUpdateModal('{{ host.id }}')">Modifica</button>
+                        <button type="button" class="btn btn-danger w-100" data-bs-toggle="modal" data-bs-target="#deleteModal" onclick="openDeleteModal('{{ host.id }}')">Cancella</button>
                     </div>
                 </div>
             </div>

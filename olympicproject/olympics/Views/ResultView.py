@@ -21,15 +21,14 @@ class ResultView(View):
             result_data = {
                 'id': str(result['_id']),
                 'discipline_title': result.get('discipline_title',''),
-                'event_title': result.get('event_title',''),
-                'slug_game': result.get('slug_game',''),
-                'participant_type': result.get('participant_type',''),
-                'medal_type': result.get('medal_type',''),
-                'rank_equal': result.get('rank_equal',''),
                 'rank_position': result.get('rank_position',''),
                 'country_name': result.get('country_name','')
             }
-                
+                #'event_title': result.get('event_title',''),
+                #'slug_game': result.get('slug_game',''),
+                #'participant_type': result.get('participant_type',''),
+                #'medal_type': result.get('medal_type',''),
+                #'rank_equal': result.get('rank_equal',''),
                 #'athletes': athletes_names,
                 #'country_code': result.get('country_code',''),
                 #'country_3_letter_code': result.get('country_3_letter_code','')
@@ -51,14 +50,17 @@ class ResultView(View):
             result_data = {
                 'id': str(result['_id']),
                 'discipline_title': result.get('discipline_title',''),
-                'event_title': result.get('event_title',''),
-                'slug_game': result.get('slug_game',''),
-                'participant_type': result.get('participant_type',''),
-                'medal_type': result.get('medal_type',''),
-                'rank_equal': result.get('rank_equal',''),
                 'rank_position': result.get('rank_position',''),
-                'country_name': result.get('country_name',''),
+                'country_name': result.get('country_name','')
             }
+                #'event_title': result.get('event_title',''),
+                #'slug_game': result.get('slug_game',''),
+                #'participant_type': result.get('participant_type',''),
+                #'medal_type': result.get('medal_type',''),
+                #'rank_equal': result.get('rank_equal',''),
+                #'athletes': athletes_names,
+                #'country_code': result.get('country_code',''),
+                #'country_3_letter_code': result.get('country_3_letter_code','')
             data.append(result_data)
 
         return JsonResponse(data, safe=False)
