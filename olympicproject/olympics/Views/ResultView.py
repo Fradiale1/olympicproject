@@ -22,7 +22,9 @@ class ResultView(View):
                 'id': str(result['_id']),
                 'discipline_title': result.get('discipline_title',''),
                 'rank_position': result.get('rank_position',''),
-                'country_name': result.get('country_name','')
+                'country_name': result.get('country_name',''),
+                'event_title': result.get('event_title',''),
+                'slug_game': result.get('slug_game','')
             }
                 #'event_title': result.get('event_title',''),
                 #'slug_game': result.get('slug_game',''),
@@ -51,10 +53,13 @@ class ResultView(View):
                 'id': str(result['_id']),
                 'discipline_title': result.get('discipline_title',''),
                 'rank_position': result.get('rank_position',''),
-                'country_name': result.get('country_name','')
+                'country_name': result.get('country_name',''),
+                'event_title': result.get('event_title',''),
+                'slug_game': result.get('slug_game',''),
+                'rank_position':result.get('rank_position','')
             }
-                #'event_title': result.get('event_title',''),
-                #'slug_game': result.get('slug_game',''),
+                
+                
                 #'participant_type': result.get('participant_type',''),
                 #'medal_type': result.get('medal_type',''),
                 #'rank_equal': result.get('rank_equal',''),
@@ -151,3 +156,70 @@ class ResultView(View):
     def delete_result(self, request, result_id):
         self.result_repository.delete_result(result_id)
         return JsonResponse({"message": "Resultato eliminato"})
+
+    @request_mapping("/getAll_by_discipline", method="get")
+    def get_all_results_by_discipline(self, request):
+        results = self.result_repository.get_all_results_by_discipline()
+        data = []
+        for result in results:
+            result_data = {
+                'id': str(result['_id']),
+                'discipline_title': result.get('discipline_title',''),
+                'slug_game': result.get('slug_game',''),
+                'event_title': result.get('event_title',''),
+                'rank_position': result.get('rank_position',''),
+                'country_name': result.get('country_name','')
+            }
+            data.append(result_data)
+        return JsonResponse(data, safe=False)
+    
+    @request_mapping("/getAll_by_event", method="get")
+    def get_all_results_by_event(self, request):
+        results = self.result_repository.get_all_results_by_event()
+        data = []
+        for result in results:
+            result_data = {
+                'id': str(result['_id']),
+                'discipline_title': result.get('discipline_title',''),
+                'slug_game': result.get('slug_game',''),
+                'event_title': result.get('event_title',''),
+                'rank_position': result.get('rank_position',''),
+                'country_name': result.get('country_name','')
+            }
+            data.append(result_data)
+        return JsonResponse(data, safe=False)
+    
+    @request_mapping("/getAll_by_sluggame", method="get")
+    def get_all_results_by_sluggame(self, request):
+        results = self.result_repository.get_all_results_by_olimpiade()
+        data = []
+        for result in results:
+            result_data = {
+                'id': str(result['_id']),
+                'discipline_title': result.get('discipline_title',''),
+                'slug_game': result.get('slug_game',''),
+                'event_title': result.get('event_title',''),
+                'rank_position': result.get('rank_position',''),
+                'country_name': result.get('country_name','')
+            }
+            data.append(result_data)
+        return JsonResponse(data, safe=False)
+    
+
+    @request_mapping("/search_placing/<str:string>", method="get")
+    def search_placing(self, request, discipline, event, olimpiade):
+        results = self.result_repository.search_placing(discipline, event, olimpiade)
+
+        data = []
+        for result in results:
+            result_data = {
+                'id': str(result['_id']),
+                'discipline_title': result.get('discipline_title',''),
+                'slug_game': result.get('slug_game',''),
+                'event_title': result.get('event_title',''),
+                'rank_position': result.get('rank_position',''),
+                'country_name': result.get('country_name',''),
+            }
+            data.append(result_data)
+
+        return JsonResponse(data, safe=False)

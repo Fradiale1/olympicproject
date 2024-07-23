@@ -52,7 +52,8 @@ urlpatterns = [
 
 
     #classifica
-    path('classifica', views.medal, name='classifica'),
+    path('placing', views.placing, name='placing'),
+    path('search_placing', views.search_placing, name='search_placing'),
 
     #path del template
     path('static_navigation', views.static_navigation, name='static_navigation'),

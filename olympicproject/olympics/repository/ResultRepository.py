@@ -1,5 +1,6 @@
 from pymongo import MongoClient, ReturnDocument
 from bson.objectid import ObjectId
+from pymongo import ASCENDING
 
 class ResultRepository:
     def __init__(self, db_url, db_name):
@@ -12,6 +13,50 @@ class ResultRepository:
             return list(self.results_collection.find())
         except Exception as e:
             print(f"Errore nel recuperare tutti i risultati: {e}")
+            return []
+        
+
+    def get_all_results_by_discipline(self):
+        all_results = self.get_all_results()
+        results_by_discipline = {}
+        try:
+            for result in all_results:
+                discipline_title = result.get('discipline_title')
+                if discipline_title:
+                    if discipline_title not in results_by_discipline:
+                        results_by_discipline[discipline_title] = result
+            return list(results_by_discipline.values())
+        except Exception as e:
+            print(f"Errore nel recuperare tutte le medaglie per nazione: {e}")
+            return []
+    
+    def get_all_results_by_event(self):
+        all_results = self.get_all_results()
+        results_by_event = {}
+        try:
+            for result in all_results:
+                event_title = result.get('event_title')
+                if event_title:
+                    if event_title not in results_by_event:
+                        results_by_event[event_title] = result
+            return list(results_by_event.values())
+        except Exception as e:
+            print(f"Errore nel recuperare tutte le medaglie per nazione: {e}")
+            return []
+        
+
+    def get_all_results_by_olimpiade(self):
+        all_results = self.get_all_results()
+        results_by_sluggame = {}
+        try:
+            for result in all_results:
+                slug_game = result.get('slug_game')
+                if slug_game:
+                    if slug_game not in results_by_sluggame:
+                        results_by_sluggame[slug_game] = result
+            return list(results_by_sluggame.values())
+        except Exception as e:
+            print(f"Errore nel recuperare tutte le medaglie per nazione: {e}")
             return []
 
     def get_result_by_id(self, result_id):
@@ -41,6 +86,30 @@ class ResultRepository:
         except Exception as e:
             print(f"Errore nella ricerca dei risultati per '{search_query}': {e}")
             return []
+        
+
+
+    def search_placing(self, discipline, event, olimpiade):
+        try:
+            query = {}
+
+            if discipline:
+                query['discipline_title'] = discipline
+            
+            if event:
+                query['event_title'] = event
+
+            if olimpiade:
+                query['slug_game'] = olimpiade
+            
+            results = list(self.results_collection.find(query))
+            # Find and sort the results by rank_position in descending order
+            results_sorted = sorted(results, key=lambda x: int(x['rank_position']))
+            return results_sorted
+        except Exception as e:
+            print(f"Errore nella ricerca delle medaglie per l'uso dei filtri")
+            return []
+
 
     def create_result(self, discipline_title, event_title, slug_game, participant_type, medal_type, rank_equal, rank_position, country_name):
         if rank_position == "1" :

@@ -62,6 +62,3 @@ function openDeleteModal(resultId) {
     document.querySelector('#resultIdInputDelete').value = resultId;
 }
 
-function openPlacing() {
-    window.location.href = 'placing.html';
-}

@@ -3,29 +3,30 @@
 {% load static %}
 
 {% block head %}
-<script type="text/javascript" src="{% static 'js/features/placing.js' %}"></script>
+
 {% endblock %}
 
+{% block content %}
 <!--filter-->
 <div class="row px-4 mx-auto w-100">
     <form action="{% url 'search_placing' %}" method="GET" class="mb-4 px-0" id="placingFilterForm">
         <div class="d-flex flex-column flex-sm-row gap-2">
             <select name="discipline" class="form-select">
                 <option selected value="">Tutti le discipline</option>
-                {% for medal_discipline in medal_discipline %}
-                <option value="{{ medal_discipline.discipline_title }}">{{ medal_discipline.discipline_title }}</option>
+                {% for result_discipline in result_disciplines %}
+                <option value="{{ result_discipline.discipline_title }}">{{ result_discipline.discipline_title }}</option>
                 {% endfor %}
             </select>
             <select name="event" class="form-select">
                 <option selected value="">Gli eventi disponibili</option>
-                {% for medal_event in medal_events %}
-                <option value="{{ medal_event.event_title }}">{{ medal_event.event_title }}</option>
+                {% for result_event in result_events %}
+                <option value="{{ result_event.event_title }}">{{ result_event.event_title }}</option>
                 {% endfor %}
             </select>
             <select name="olimpiade" class="form-select">
                 <option selected value="">Tutti le olimpiadi</option>
-                {% for medal_sluggame in medal_sluggames %}
-                <option value="{{ medal_sluggame.slug_game }}">{{ medal_sluggame.slug_game }}</option>
+                {% for result_sluggame in result_sluggames %}
+                <option value="{{ result_sluggame.slug_game }}">{{ result_sluggame.slug_game }}</option>
                 {% endfor %}
             </select>
             <button type="submit" class="btn btn-primary sm:w-100">Cerca</button>
@@ -49,16 +50,17 @@
                         <div class="d-flex align-items-center">
                             <span class="badge badge-primary badge-pill mr-3">{{ forloop.counter }}</span>
                             <div>
-                                <h5 class="mb-1">{{ medal.event_title }}</h5>
+                                <h5 class="mb-1"> Disciplina: {{ result.discipline_title }}</h5>
                                 <small>
                                     <br>
-                                     Disciplina: {{ result.discipline_title }}
+                                    Evento: {{ result.event_title }}
                                     <br>
-                                    Posizione: {{ medal.rank_position }}
+                                    Olimpiade: {{ result.slug_game }}
                                     <br>
-                                    Paese: {{ medal.country_name }}
+                                    Posizione: {{ result.rank_position }}
                                     <br>
-                                    Tipo di partecipante: {{ medal.participant_type }}
+                                    Paese: {{ result.country_name }}
+                                    <br>
                                 </small>
                             </div>
                         </div>
@@ -74,12 +76,12 @@
     <ul class="pagination justify-content-end p-4">
         {% if page_obj.has_previous %}
             <li class="page-item">
-                <a class="page-link" href="?{% if request.GET.string_searchbar %}string_searchbar={{ request.GET.string_searchbar }}&{% endif %}{% if request.GET.nation %}nation={{ request.GET.nation }}&{% endif %}{% if request.GET.gender %}gender={{ request.GET.gender }}&{% endif %}page=1" aria-label="First">
+                <a class="page-link" href="/placing?page=1{% if request.GET.discipline %}&discipline={{ request.GET.discipline }}{% endif %}{% if request.GET.event %}&event={{ request.GET.event }}{% endif %}{% if request.GET.olimpiade %}&olimpiade={{ request.GET.olimpiade }}{% endif %}" aria-label="First">
                     <span aria-hidden="true">&laquo;&laquo;</span>
                 </a>
             </li>
             <li class="page-item">
-                <a class="page-link" href="?{% if request.GET.string_searchbar %}string_searchbar={{ request.GET.string_searchbar }}&{% endif %}{% if request.GET.nation %}nation={{ request.GET.nation }}&{% endif %}{% if request.GET.gender %}gender={{ request.GET.gender }}&{% endif %}page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                <a class="page-link" href="/placing?page={{ page_obj.previous_page_number }}{% if request.GET.discipline %}&discipline={{ request.GET.discipline }}{% endif %}{% if request.GET.event %}&event={{ request.GET.event }}{% endif %}{% if request.GET.olimpiade %}&olimpiade={{ request.GET.olimpiade }}{% endif %}" aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
@@ -96,18 +98,18 @@
             {% if page_obj.number == num %}
                 <li class="page-item active"><span class="page-link">{{ num }}</span></li>
             {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
-                <li class="page-item"><a class="page-link" href="?{% if request.GET.string_searchbar %}string_searchbar={{ request.GET.string_searchbar }}&{% endif %}{% if request.GET.nation %}nation={{ request.GET.nation }}&{% endif %}{% if request.GET.gender %}gender={{ request.GET.gender }}&{% endif %}page={{ num }}">{{ num }}</a></li>
+                <li class="page-item"><a class="page-link" href="/placing?page={{ num }}{% if request.GET.discipline %}&discipline={{ request.GET.discipline }}{% endif %}{% if request.GET.event %}&event={{ request.GET.event }}{% endif %}{% if request.GET.olimpiade %}&olimpiade={{ request.GET.olimpiade }}{% endif %}">{{ num }}</a></li>
             {% endif %}
         {% endfor %}
 
         {% if page_obj.has_next %}
             <li class="page-item">
-                <a class="page-link" href="?{% if request.GET.string_searchbar %}string_searchbar={{ request.GET.string_searchbar }}&{% endif %}{% if request.GET.nation %}nation={{ request.GET.nation }}&{% endif %}{% if request.GET.gender %}gender={{ request.GET.gender }}&{% endif %}page={{ page_obj.next_page_number }}" aria-label="Next">
+                <a class="page-link" href="/placing?page={{ page_obj.next_page_number }}{% if request.GET.discipline %}&discipline={{ request.GET.discipline }}{% endif %}{% if request.GET.event %}&event={{ request.GET.event }}{% endif %}{% if request.GET.olimpiade %}&olimpiade={{ request.GET.olimpiade }}{% endif %}" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
             </li>
             <li class="page-item">
-                <a class="page-link" href="?{% if request.GET.string_searchbar %}string_searchbar={{ request.GET.string_searchbar }}&{% endif %}{% if request.GET.nation %}nation={{ request.GET.nation }}&{% endif %}{% if request.GET.gender %}gender={{ request.GET.gender }}&{% endif %}page={{ page_obj.paginator.num_pages }}" aria-label="Last">
+                <a class="page-link" href="/placing?page={{ page_obj.paginator.num_pages }}{% if request.GET.discipline %}&discipline={{ request.GET.discipline }}{% endif %}{% if request.GET.event %}&event={{ request.GET.event }}{% endif %}{% if request.GET.olimpiade %}&olimpiade={{ request.GET.olimpiade }}{% endif %}" aria-label="Last">
                     <span aria-hidden="true">&raquo;&raquo;</span>
                 </a>
             </li>
@@ -122,3 +124,4 @@
     </ul>
 </nav>
 {% endif %}
+{% endblock %}

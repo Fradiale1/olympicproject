@@ -35,7 +35,7 @@ class AthleteRepository:
             }
                     #{'athlete_url': {'$regex': search_query, '$options': 'i'}},
                     #{'bio': {'$regex': search_query, '$options': 'i'}}
-            results = list(self.athletes_collection.find(query).limit(200))
+            results = list(self.athletes_collection.find(query))
             return results
         except Exception as e:
             print(f"Errore nella ricerca degli atleti per '{search_query}': {e}")

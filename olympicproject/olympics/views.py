@@ -399,29 +399,42 @@ def delete_result(request):
     
     return HttpResponse(status=405)
 
-
+@csrf_exempt
 def placing(request):
 
-    return render(request, 'features/placing.html')
+    result_disciplines=json.loads(ResultView().get_all_results_by_discipline(request).content)
+    result_events=json.loads(ResultView().get_all_results_by_event(request).content)
+    result_sluggames=json.loads(ResultView().get_all_results_by_sluggame(request).content)
+    results=json.loads(ResultView().get_all_results(request).content)
 
-@csrf_exempt
-def search_placing(request):
-    string_searchbar = request.GET.get('string_searchbar')
-    nation = request.GET.get('nation')
-    gender = request.GET.get('gender')
-
-    medals = json.loads(MedalView().search_medal(request,string_searchbar, nation, gender).content)
-    athletes = json.loads(AthleteView().get_all_athletes(request).content)
-    hosts = json.loads(HostView().get_all_hosts(request).content)
-    medal_nations=json.loads(MedalView().get_all_medals_by_nation(request).content)
-
-
-    paginator = Paginator(medals, 12)  
+    paginator = Paginator(results, 12)  
 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-   
-    return render(request, 'features/medal.html', {'page_obj': page_obj,'medal_nations': medal_nations,'athletes': athletes, 'hosts': hosts}) #'athletes': athletes,
+
+    return render(request, 'features/placing.html',{'page_obj': page_obj,'result_disciplines':result_disciplines,'result_events':result_events,'result_sluggames':result_sluggames}) #'results': results,
+
+
+@csrf_exempt
+def search_placing(request):
+
+    discipline = request.GET.get('discipline')
+    event = request.GET.get('event')
+    olimpiade = request.GET.get('olimpiade')
+
+
+    result_disciplines=json.loads(ResultView().get_all_results_by_discipline(request).content)
+    #result_events=json.loads(ResultView().get_all_results_by_event(request).content)
+    result_sluggames=json.loads(ResultView().get_all_results_by_sluggame(request).content)
+    results= json.loads(ResultView().search_placing(request,discipline, event, olimpiade).content)
+
+    paginator = Paginator(results, 12)  
+
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'features/placing.html',{'page_obj': page_obj,'result_disciplines':result_disciplines,'result_sluggames':result_sluggames}) #'result_events':result_events,
+
 
 #view per le pagine del template
 def static_navigation(request):
