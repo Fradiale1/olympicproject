@@ -433,7 +433,7 @@ def search_placing(request):
 
     result_disciplines=json.loads(ResultView().get_all_results_by_discipline(request).content)
     #result_events=json.loads(ResultView().get_all_results_by_event(request).content)
-    result_sluggames=json.loads(ResultView().get_all_results_by_sluggame(request).content)
+    result_sluggames=json.loads(HostView().get_all_hosts(request).content)
     results= json.loads(ResultView().search_placing(request,discipline, event, olimpiade).content)
 
     paginator = Paginator(results, 12)  
