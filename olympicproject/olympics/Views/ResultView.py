@@ -97,28 +97,11 @@ class ResultView(View):
             data.get('event_title'),
             data.get('slug_game'),
             data.get('participant_type'),
-            data.get('medal_type'),
-            #data.get('athletes'),
             data.get('rank_equal'),
             data.get('rank_position'),
             data.get('country_name')
-            #data.get('country_code'),
-            #data.get('country_3_letter_code')
         )
-        return JsonResponse({
-            "id": str(result['_id']),
-            "discipline_title": result.get('discipline_title',''),
-            "event_title": result.get('event_title',''),
-            "slug_game": result.get('slug_game',''),
-            "participant_type": result.get('participant_type',''),
-            'medal_type': result.get('medal_type',''),
-            #'athletes': result.get('athletes',''),
-            "rank_equal": result.get('rank_equal',''),
-            "rank_position": result.get('rank_position',''),
-            "country_name": result.get('country_name','')
-            #'country_code': result.get('country_code',''),
-            #'country_3_letter_code': result.get('country_3_letter_code','')
-        })
+        return JsonResponse({"message": "Creazione risultato avvenuta con successo"})
 
     @request_mapping("/update/<str:result_id>", method="post")
     def update_result(self, requestData):
@@ -129,7 +112,6 @@ class ResultView(View):
             data.get('event_title'),
             data.get('slug_game'),
             data.get('participant_type'),
-            data.get('medal_type'),
             #data.get('athletes'),
             data.get('rank_equal'),
             data.get('rank_position'),
@@ -137,25 +119,12 @@ class ResultView(View):
             #data.get('country_code'),
             #data.get('country_3_letter_code')
         )
-        return JsonResponse({
-            'id': str(result['_id']),
-            'discipline_title': result.get('discipline_title',''),
-            'event_title': result.get('event_title',''),
-            'slug_game': result.get('slug_game',''),
-            'participant_type': result.get('participant_type',''),
-            'medal_type': result.get('medal_type',''),
-            #'athletes': result.get('athletes',''),
-            'rank_equal': result.get('rank_equal',''),
-            'rank_position': result.get('rank_position',''),
-            'country_name': result.get('country_name',''),
-            #'country_code': result.get('country_code',''),
-            #'country_3_letter_code': result.get('country_3_letter_code','')
-        })
+        return JsonResponse({"message": "Aggiornamento risultato avvenuto con successo"})
 
     @request_mapping("/delete/<str:result_id>", method="get")
     def delete_result(self, request, result_id):
         self.result_repository.delete_result(result_id)
-        return JsonResponse({"message": "Resultato eliminato"})
+        return JsonResponse({"message": "Risultato eliminato"})
 
     @request_mapping("/getAll_by_discipline", method="get")
     def get_all_results_by_discipline(self, request):

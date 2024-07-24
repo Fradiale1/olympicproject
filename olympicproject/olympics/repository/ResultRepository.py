@@ -111,7 +111,7 @@ class ResultRepository:
             return []
 
 
-    def create_result(self, discipline_title, event_title, slug_game, participant_type, medal_type, rank_equal, rank_position, country_name):
+    def create_result(self, discipline_title, event_title, slug_game, participant_type, rank_equal, rank_position, country_name):
         if rank_position == "1" :
             result = {
                 'discipline_title': discipline_title,
@@ -181,7 +181,7 @@ class ResultRepository:
             print(f"Errore nel creare il risultato: {e}")
             return None
 
-    def update_result(self, result_id, discipline_title, event_title, slug_game, participant_type, medal_type, rank_equal, rank_position, country_name):
+    def update_result(self, result_id, discipline_title, event_title, slug_game, participant_type, rank_equal, rank_position, country_name):
         update_fields = {}
         if discipline_title:
             update_fields['discipline_title'] = discipline_title

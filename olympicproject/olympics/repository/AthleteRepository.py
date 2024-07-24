@@ -41,15 +41,13 @@ class AthleteRepository:
             print(f"Errore nella ricerca degli atleti per '{search_query}': {e}")
             return []
 
-    def create_athlete(self, athlete_url, athlete_full_name, games_participations, first_game, athlete_year_birth, athlete_medals, bio):
+    def create_athlete(self, athlete_full_name, games_participations, first_game, athlete_year_birth, athlete_medals):
         athlete = {
-            'athlete_url': athlete_url, 
             'athlete_full_name': athlete_full_name, 
             'games_participations': games_participations, 
             'first_game': first_game, 
             'athlete_year_birth': athlete_year_birth, 
-            'athlete_medals': athlete_medals, 
-            'bio': bio
+            'athlete_medals': athlete_medals
         }
         try:
             result = self.athletes_collection.insert_one(athlete)
@@ -59,10 +57,8 @@ class AthleteRepository:
             print(f"Errore nel creare l'atleta: {e}")
             return None
 
-    def update_athlete(self, athlete_id, athlete_url=None, athlete_full_name=None, games_participations=None, first_game=None, athlete_year_birth=None, athlete_medals=None, bio=None):
+    def update_athlete(self, athlete_id, athlete_full_name=None, games_participations=None, first_game=None, athlete_year_birth=None, athlete_medals=None):
         update_fields = {}
-        if athlete_url:
-            update_fields['athlete_url'] = athlete_url
         if athlete_full_name:
             update_fields['athlete_full_name'] = athlete_full_name
         if games_participations:
@@ -73,8 +69,6 @@ class AthleteRepository:
             update_fields['athlete_year_birth'] = athlete_year_birth
         if athlete_medals:
             update_fields['athlete_medals'] = athlete_medals
-        if bio:
-            update_fields['bio'] = bio
 
         try:
             result = self.athletes_collection.find_one_and_update(

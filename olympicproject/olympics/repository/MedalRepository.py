@@ -58,7 +58,7 @@ class MedalRepository:
             print(f"Errore nella ricerca delle medaglie per l'uso dei filtri")
             return []
 
-    def create_medal(self, discipline_title, slug_game, event_title, event_gender, medal_type, participant_type, participant_title, athlete_url, athlete_full_name, country_name, country_code, country_3_letter_code):
+    def create_medal(self, discipline_title, slug_game, event_title, event_gender, medal_type, participant_type, participant_title, athlete_full_name, country_name, country_code, country_3_letter_code):
         medal = {
             'discipline_title': discipline_title,
             'slug_game': slug_game,
@@ -67,7 +67,6 @@ class MedalRepository:
             'medal_type': medal_type,
             'participant_type': participant_type,
             'participant_title': participant_title,
-            'athlete_url': athlete_url,
             'athlete_full_name': athlete_full_name,
             'country_name': country_name,
             'country_code': country_code,
@@ -81,7 +80,7 @@ class MedalRepository:
             print(f"Errore nel creare la medaglia: {e}")
             return None
 
-    def update_medal(self, medal_id, discipline_title, slug_game, event_title, event_gender, medal_type, participant_type, participant_title, athlete_url, athlete_full_name, country_name, country_code, country_3_letter_code):
+    def update_medal(self, medal_id, discipline_title, slug_game, event_title, event_gender, medal_type, participant_type, participant_title, athlete_full_name, country_name, country_code, country_3_letter_code):
         update_fields = {}
         if discipline_title:
             update_fields['discipline_title'] = discipline_title
@@ -97,8 +96,6 @@ class MedalRepository:
             update_fields['participant_type'] = participant_type
         if participant_title:
             update_fields['participant_title'] = participant_title
-        if athlete_url:
-            update_fields['athlete_url'] = athlete_url
         if athlete_full_name:
             update_fields['athlete_full_name'] = athlete_full_name
         if country_name:
