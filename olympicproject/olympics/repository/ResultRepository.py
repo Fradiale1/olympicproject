@@ -30,8 +30,8 @@ class ResultRepository:
             print(f"Errore nel recuperare tutte le medaglie per nazione: {e}")
             return []
     
-    def get_all_results_by_event(self):
-        all_results = self.get_all_results()
+    def get_results_event_by_discipline(self,discipline):
+        all_results = self.results_collection.find({"discipline_title": discipline})
         results_by_event = {}
         try:
             for result in all_results:

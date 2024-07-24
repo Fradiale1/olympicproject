@@ -173,9 +173,12 @@ class ResultView(View):
             data.append(result_data)
         return JsonResponse(data, safe=False)
     
-    @request_mapping("/getAll_by_event", method="get")
-    def get_all_results_by_event(self, request):
-        results = self.result_repository.get_all_results_by_event()
+    @request_mapping("/get_event_by_discipline", method="get")
+    def get_results_event_by_discipline(self, request):
+        discipline = request.GET.get('discipline')
+        print("AAAA")
+        print(discipline)
+        results = self.result_repository.get_results_event_by_discipline(discipline)
         data = []
         for result in results:
             result_data = {

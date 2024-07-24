@@ -1,4 +1,4 @@
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from olympics.Views.AthleteView import AthleteView
@@ -7,6 +7,7 @@ from olympics.Views.MedalView import MedalView
 from olympics.Views.ResultView import ResultView
 from django.views.decorators.csrf import csrf_protect, csrf_exempt
 from django.core.paginator import Paginator
+from django_request_mapping import request_mapping
 import json
 
 # Creazione view Index
@@ -403,8 +404,8 @@ def delete_result(request):
 def placing(request):
 
     result_disciplines=json.loads(ResultView().get_all_results_by_discipline(request).content)
-    result_events=json.loads(ResultView().get_all_results_by_event(request).content)
-    result_sluggames=json.loads(ResultView().get_all_results_by_sluggame(request).content)
+    #result_events=json.loads(ResultView().get_all_results_by_event(request).content)
+    result_sluggames=json.loads(HostView().get_all_hosts(request).content)
     results=json.loads(ResultView().get_all_results(request).content)
 
     paginator = Paginator(results, 12)  
@@ -412,8 +413,15 @@ def placing(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 
-    return render(request, 'features/placing.html',{'page_obj': page_obj,'result_disciplines':result_disciplines,'result_events':result_events,'result_sluggames':result_sluggames}) #'results': results,
+    return render(request, 'features/placing.html',{'page_obj': page_obj,'result_disciplines':result_disciplines,'result_sluggames':result_sluggames}) #'results': results,'result_events':result_events,
 
+@csrf_exempt
+def fill_event(request):
+    discipline = request.GET.get('discipline')
+
+    result_events=json.loads(ResultView().get_results_event_by_discipline(request, discipline).content)
+
+    return JsonResponse({'result_events':result_events})
 
 @csrf_exempt
 def search_placing(request):

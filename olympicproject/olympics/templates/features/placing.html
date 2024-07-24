@@ -3,30 +3,29 @@
 {% load static %}
 
 {% block head %}
-
+<script type="text/javascript" src="{% static 'js/features/placing.js' %}"></script>
 {% endblock %}
 
 {% block content %}
+<div class="d-flex justify-content-end w-100 px-4 pt-2 mb-3">
+</div>
 <!--filter-->
 <div class="row px-4 mx-auto w-100">
     <form action="{% url 'search_placing' %}" method="GET" class="mb-4 px-0" id="placingFilterForm">
         <div class="d-flex flex-column flex-sm-row gap-2">
-            <select name="discipline" class="form-select">
-                <option selected value="">Tutti le discipline</option>
+            <select name="discipline" class="form-select" id="disciplineSelect">
+                <option selected value="">Seleziona la disciplina</option>
                 {% for result_discipline in result_disciplines %}
                 <option value="{{ result_discipline.discipline_title }}">{{ result_discipline.discipline_title }}</option>
                 {% endfor %}
             </select>
-            <select name="event" class="form-select">
-                <option selected value="">Gli eventi disponibili</option>
-                {% for result_event in result_events %}
-                <option value="{{ result_event.event_title }}">{{ result_event.event_title }}</option>
-                {% endfor %}
+            <select name="event" class="form-select" id="eventSelect" disabled>
+                <option selected value="">Seleziona il genere</option>
             </select>
             <select name="olimpiade" class="form-select">
-                <option selected value="">Tutti le olimpiadi</option>
+                <option selected value="">Seleziona l'olimpiade</option>
                 {% for result_sluggame in result_sluggames %}
-                <option value="{{ result_sluggame.slug_game }}">{{ result_sluggame.slug_game }}</option>
+                <option value="{{ result_sluggame.game_slug }}">{{ result_sluggame.game_name }}</option>
                 {% endfor %}
             </select>
             <button type="submit" class="btn btn-primary sm:w-100">Cerca</button>
@@ -51,17 +50,18 @@
                             <span class="badge badge-primary badge-pill mr-3">{{ forloop.counter }}</span>
                             <div>
                                 <h5 class="mb-1"> Disciplina: {{ result.discipline_title }}</h5>
-                                <small>
-                                    <br>
-                                    Evento: {{ result.event_title }}
-                                    <br>
-                                    Olimpiade: {{ result.slug_game }}
-                                    <br>
-                                    Posizione: {{ result.rank_position }}
-                                    <br>
-                                    Paese: {{ result.country_name }}
-                                    <br>
-                                </small>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="text-muted">Evento: {{ result.event_title }}</span>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="text-muted">Olimpiade: {{ result.slug_game }}</span>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="text-muted">Posizione: {{ result.rank_position }}</span>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <span class="text-muted">Paese: {{ result.country_name }}</span>
+                                </div>
                             </div>
                         </div>
                     </li>

@@ -53,6 +53,7 @@ urlpatterns = [
 
     #classifica
     path('placing', views.placing, name='placing'),
+    path('fill_event', views.fill_event, name='fill_event'),
     path('search_placing', views.search_placing, name='search_placing'),
 
     #path del template
