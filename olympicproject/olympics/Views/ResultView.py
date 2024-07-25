@@ -145,7 +145,7 @@ class ResultView(View):
     @request_mapping("/get_event_by_discipline", method="get")
     def get_results_event_by_discipline(self, request):
         discipline = request.GET.get('discipline')
-        print("AAAA")
+        
         print(discipline)
         results = self.result_repository.get_results_event_by_discipline(discipline)
         data = []

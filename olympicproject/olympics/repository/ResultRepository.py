@@ -81,7 +81,7 @@ class ResultRepository:
                     {'country_name': {'$regex': search_query, '$options': 'i'}},
                 ]
             }
-            results = list(self.results_collection.find(query).limit(200))
+            results = list(self.results_collection.find(query))
             return results
         except Exception as e:
             print(f"Errore nella ricerca dei risultati per '{search_query}': {e}")
@@ -92,6 +92,7 @@ class ResultRepository:
     def search_placing(self, discipline, event, olimpiade):
         try:
             query = {}
+            print(discipline, event, olimpiade)
 
             if discipline:
                 query['discipline_title'] = discipline
@@ -103,6 +104,7 @@ class ResultRepository:
                 query['slug_game'] = olimpiade
             
             results = list(self.results_collection.find(query))
+            print(results)
             # Find and sort the results by rank_position in descending order
             results_sorted = sorted(results, key=lambda x: int(x['rank_position']))
             return results_sorted
